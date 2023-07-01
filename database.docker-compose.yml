@@ -1,0 +1,23 @@
+version: "1.0"
+
+services:
+  db:
+    image: "postgres:14.5"
+    container_name: "postgres"
+    restart: unless-stopped
+    ports:
+      - 3432:5432
+    volumes:
+      - todo_express_db:/var/lib/postgresql/data
+    env_file:
+      - .env
+    # networks:
+    #   - app
+
+volumes:
+  todo_nestjs_db:
+    external: true
+
+# networks:
+#   app:
+#     driver: bridge
