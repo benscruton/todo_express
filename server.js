@@ -11,7 +11,8 @@ app.use(
   express.urlencoded({"extended": true})
 );    
 
-// require('./server/config/database.config');
+// Connect database
+const {sequelize} = require("./server/config");
 
 const routes = require("./server/routes");
 // app.use(express.static('client/build'));

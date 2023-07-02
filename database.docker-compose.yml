@@ -15,7 +15,7 @@ services:
     #   - app
 
 volumes:
-  todo_nestjs_db:
+  todo_express_db:
     external: true
 
 # networks:
