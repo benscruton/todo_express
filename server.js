@@ -14,7 +14,7 @@ app.use(
 const {sequelize} = require("./server/config");
 sequelize.authenticate()
   .then(() => console.log("Database connected successfully."));
-// sequelize.sync()
+// sequelize.sync({alter: true})
 //   .then(d => console.log(d));
 
 const routes = require("./server/routes");

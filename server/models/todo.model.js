@@ -23,6 +23,10 @@ Todo.init(
 
     dueDate: {
       type: DataTypes.DATE
+    },
+
+    deletedAt: {
+      type: DataTypes.DATE
     }
 
   },
