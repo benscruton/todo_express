@@ -11,11 +11,14 @@ app.use(
   express.urlencoded({"extended": true})
 );    
 
-// Connect database
 const {sequelize} = require("./server/config");
+sequelize.authenticate()
+  .then(() => console.log("Database connected successfully."));
+// sequelize.sync()
+//   .then(d => console.log(d));
 
 const routes = require("./server/routes");
 // app.use(express.static('client/build'));
 app.use(routes);
 
-app.listen(port, () => console.log(`Listening on ${port}`));
+app.listen(port, () => console.log(`Listening on ${port}...`));
