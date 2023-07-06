@@ -33,7 +33,7 @@ const todoController = {
       todoId,
       {attributes: {exclude: ["deletedAt"]}}
     )
-      .then(todo => rsp.json(todo));
+      .then(todo => rsp.json(todo.deletedAt ? null : todo));
   },
 
   updateById: (req, rsp) => {

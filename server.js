@@ -4,8 +4,10 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 8000;
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 
 app.use(
+  cookieParser(),
   cors(),
   express.json(),
   express.urlencoded({"extended": true})
@@ -14,8 +16,6 @@ app.use(
 const {sequelize} = require("./server/config");
 sequelize.authenticate()
   .then(() => console.log("Database connected successfully."));
-// sequelize.sync({alter: true})
-//   .then(d => console.log(d));
 
 const routes = require("./server/routes");
 // app.use(express.static('client/build'));

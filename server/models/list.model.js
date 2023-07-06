@@ -1,9 +1,9 @@
 const {DataTypes, Model} = require('sequelize');
 const {sequelize} = require("../config");
 
-class Todo extends Model {}
+class List extends Model {}
 
-Todo.init(
+List.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,22 +11,9 @@ Todo.init(
       primaryKey: true
     },
 
-    text: {
-      type: DataTypes.TEXT,
+    name: {
+      type: DataTypes.STRING,
       allowNull: false
-    },
-
-    isComplete: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-
-    dueDate: {
-      type: DataTypes.DATE
-    },
-
-    notes: {
-      type: DataTypes.TEXT
     },
 
     deletedAt: {
@@ -37,8 +24,16 @@ Todo.init(
   // Config
   {
     sequelize,
-    modelName: 'todo'
+    modelName: 'list'
   }
 );
 
-module.exports = Todo;
+// Join with Todos
+const Todo = require("./todo.model");
+List.hasMany(Todo, {
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE"
+});
+Todo.belongsTo(List);
+
+module.exports = List;
