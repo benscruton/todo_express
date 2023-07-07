@@ -9,5 +9,3 @@ sequelize.authenticate()
       .then(rsp => console.log(rsp));
   })
   .catch(e => console.log("Error connecting database:", e));
-// sequelize.sync({alter: true})
-//   .then(d => console.log(d));
