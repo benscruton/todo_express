@@ -1,14 +1,10 @@
 const {
-  authentications: {apiKeyValid},
   encryptions: {encryptString, decryptString}
 } = require("../config");
 const {Collection} = require("../models");
 
 const collectionController = {
   create: (req, rsp) => {
-    if(!apiKeyValid(req.headers["x-api-key"])){
-      return rsp.status(401).json({error: "forbidden"});
-    }
     Collection.create(
       req.body,
       {fields: ["name", "passphrase"]}
@@ -25,6 +21,9 @@ const collectionController = {
       .then(coll => {
         if(passphrase !== coll.passphrase){
           return rsp.status(401).json({success: false});
+        }
+        if(coll.deletedAt){
+          return rsp.status(404).json({success: false});
         }
         rsp.json({
           success: true,
@@ -44,6 +43,9 @@ const collectionController = {
       .then(coll => {
         if(passphrase !== coll.passphrase){
           return rsp.status(401).json({success: false});
+        }
+        if(coll.deletedAt){
+          return rsp.status(404).json({success: false});
         }
         rsp.json({
           success: true,

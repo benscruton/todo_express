@@ -1,9 +1,9 @@
-const authentications = require("./authentications");
 const encryptions = require("./encryptions");
+const middleware = require("./middleware");
 const sequelize = require("./sequelize");
 
 module.exports = {
-  authentications,
   encryptions,
+  middleware,
   sequelize
 };
