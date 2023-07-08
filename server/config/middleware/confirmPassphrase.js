@@ -1,34 +1,50 @@
 const {encryptions: {decryptString}} = require("..");
-const {Collection} = require("../../models");
+const {Collection, List, Todo} = require("../../models");
 
-const confirmPassphrase = (req, rsp, next) => {
-  const {collectionId} = req.params;
+const confirmPassphrase = async (req, rsp, next) => {
+  const {
+    collectionId,
+    listId,
+    todoId
+  } = req.params;
   const {passphrase, isPlainText} = req.body;
-  const plainPassphrase = isPlainText ?
+  const reqPassphrase = isPlainText ?
     passphrase : decryptString(passphrase);
     
-  Collection.findByPk(collectionId)
-    .then(coll => {
-      if(!coll){
-        return rsp.status(404).json({
-          success: false,
-          error: "not found"
-        });
-      }
+  let collPassphrase;
+  if(collectionId){
+    const coll = await Collection.findByPk(collectionId);
+    collPassphrase = coll?.passphrase
+  }
+  else if(listId){
+    const list = await List.findByPk(
+      listId,
+      {include: Collection}
+    );
+    collPassphrase = list?.collection?.passphrase;
+  }
+  else if(todoId){
+    const todo = await Todo.findByPk(
+      todoId,
+      {include: {model: List, include: Collection}}
+    );
+    collPassphrase = todo?.list?.collection?.passphrase;
+  }
 
-      if(plainPassphrase !== coll.passphrase){
-        return rsp.status(401).json({
-          success: false,
-          error: "forbidden"
-        });
-      }
-      
-      next();
-    })
-    .catch(error => rsp.status(400).json({
+  if(!collPassphrase){
+    return rsp.status(404).json({
       success: false,
-      error
-    }));
+      error: "not found"
+    });
+  }
+  if(collPassphrase !== reqPassphrase){
+    return rsp.status(401).json({
+      success: false,
+      error: "forbidden"
+    });
+  }
+
+  next();
 };
 
 module.exports = confirmPassphrase;

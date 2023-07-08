@@ -9,7 +9,7 @@ class Collection extends Model {}
 Collection.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true
     },

@@ -4,6 +4,8 @@ const {
 const {Collection, List, Todo} = require("../models");
 
 const collectionController = {
+
+  // POST to /api/collections
   create: async (req, rsp) => {
     try{
       const coll = await Collection.create(
@@ -21,6 +23,7 @@ const collectionController = {
     }
   },
 
+  // POST to /api/collections/:collectionId/access
   grantCollectionAccess: (req, rsp) => {
     const {passphrase} = req.body;
     rsp.json({
@@ -29,16 +32,15 @@ const collectionController = {
     });
   },
 
+  // POST to /api/collections/:collectionId
   getCollection: (req, rsp) => {
     const {collectionId} = req.params;
     const passphrase = decryptString(req.body.passphrase);
     Collection.findByPk(
       collectionId,
       {
-        include: {
-          model: List,
-          include: Todo
-        }
+        attributes: {exclude: ["deletedAt"]},
+        include: {model: List, include: Todo}
       }
     )
       .then(coll => {
@@ -51,7 +53,7 @@ const collectionController = {
         coll.passphrase = "";
         rsp.json({
           success: true,
-          collection: coll.toJSON()
+          collection: coll
         });
       })
       .catch(e => rsp.status(400).json({error: e}));
