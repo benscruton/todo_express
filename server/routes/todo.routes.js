@@ -7,7 +7,7 @@ router.route("/")
   .get(todoController.all)
 
 router.route("/:todoId")
-  // .post(confirmPassphrase, todoController.findById)
+  .post(confirmPassphrase, todoController.findById)
   .put(confirmPassphrase, todoController.updateById)
   .delete(confirmPassphrase, todoController.softDeleteById);
 

@@ -12,13 +12,13 @@ const todoController = {
       .catch(error => rsp.status(500).json({error}));
   },
   
-  // // POST to /api/todos/:todoId
-  // findById: (req, rsp) => {
-  //   const {todoId} = req.params;
-  //   Todo.findByPk(todoId)
-  //     .then(todo => rsp.json(todo))
-  //     .catch(error => rsp.status(400).json({error}));
-  // },
+  // POST to /api/todos/:todoId
+  findById: (req, rsp) => {
+    const {todoId} = req.params;
+    Todo.findByPk(todoId)
+      .then(todo => rsp.json(todo))
+      .catch(error => rsp.status(400).json({error}));
+  },
 
   // PUT to /api/todos/:todoId
   updateById: async (req, rsp) => {
