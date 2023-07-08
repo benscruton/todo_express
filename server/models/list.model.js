@@ -14,6 +14,10 @@ List.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+
+    orderRank: {
+      type: DataTypes.INTEGER
     }
   },
 

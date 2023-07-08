@@ -14,6 +14,7 @@ const collectionController = {
       );
       const list = await List.create({
         name: "To Do",
+        orderRank: 0
       });
       await list.setCollection(coll);
       rsp.json({collectionId: coll.id});
@@ -40,7 +41,14 @@ const collectionController = {
       collectionId,
       {
         attributes: {exclude: ["deletedAt"]},
-        include: {model: List, include: Todo}
+        include: {
+          model: List, include: {
+            model: Todo,
+            order: [
+              [Todo, "orderRank", "ASC"]
+            ]
+          }
+        }
       }
     )
       .then(coll => {

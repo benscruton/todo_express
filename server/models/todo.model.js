@@ -25,7 +25,7 @@ Todo.init(
       type: DataTypes.DATE
     },
 
-    order: {
+    orderRank: {
       type: DataTypes.INTEGER
     },
 

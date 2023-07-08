@@ -6,12 +6,17 @@ const listController = {
   addTodo: async (req, rsp) => {
     try{
       const {listId} = req.params;
+      const {todo: todoData} = req.body;
 
-      const todo = await Todo.create(
-        req.body.todo,
-        {fields: ["text", "isComplete", "dueDate", "notes"]}
+      const list = await List.findByPk(
+        listId,
+        {include: Todo}
       );
-      const list = await List.findByPk(listId);
+      todoData.orderRank = list.todos.length;
+      const todo = await Todo.create(
+        todoData,
+        {fields: ["text", "isComplete", "dueDate", "notes", "orderRank"]}
+      );
       await todo.setList(list);
 
       rsp.json({
