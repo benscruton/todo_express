@@ -14,17 +14,14 @@ List.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false
-    },
-
-    deletedAt: {
-      type: DataTypes.DATE
     }
-
   },
+
   // Config
   {
     sequelize,
-    modelName: 'list'
+    modelName: 'list',
+    paranoid: true  // enable soft deletion
   }
 );
 

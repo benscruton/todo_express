@@ -1,16 +1,17 @@
 const router = require("express").Router();
 const {collectionController} = require("../controllers");
 const {
-  middleware: {validateApiKey}
-} = require("../config");
+  validateApiKey,
+  confirmPassphrase
+} = require("../config/middleware");
 
 router.route("/")
   .post(validateApiKey, collectionController.create);
 
 router.route("/:collectionId")
-  .post(collectionController.getCollection);
+  .post(confirmPassphrase, collectionController.getCollection);
 
 router.route("/:collectionId/access")
-  .post(collectionController.grantCollectionAccess);
+  .post(confirmPassphrase, collectionController.grantCollectionAccess);
 
 module.exports = router;

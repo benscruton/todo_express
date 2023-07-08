@@ -1,39 +1,40 @@
-const {Todo} = require("../models");
+const {List, Todo} = require("../models");
 
 const todoController = {
   test: (req, rsp) => rsp.json({message: "Controller: Success!"}),
 
   all: (_, rsp) => {
-    Todo.findAll({
-      attributes: {exclude: ["deletedAt"]},
-      where: {deletedAt: null}
-    })
+    Todo.findAll()
       .then(todos => rsp.json({todos}))
-      .catch(error => rsp.json({error}));
+      .catch(error => rsp.status(400).json({error}));
   },
   
-  create: (req, rsp) => {
-    Todo.create(
-      req.body,
-      {fields: ["text", "isComplete", "dueDate"]}
-    )
-      .then(todo => rsp.json({
+  create: async (req, rsp) => {
+    try{
+      const {listId} = req.params;
+
+      const todo = await Todo.create(req.body.todo);
+      const list = await List.findByPk(listId);
+      await todo.setList(list);
+
+      rsp.json({
         success: true,
         todo
-      }))
-      .catch(error => rsp.json({
+      });
+    }
+    catch(error){
+      rsp.status(400).json({
         success: false,
         error
-      }));
+      });
+    }
   },
 
   findById: (req, rsp) => {
     const {todoId} = req.params;
-    Todo.findByPk(
-      todoId,
-      {attributes: {exclude: ["deletedAt"]}}
-    )
-      .then(todo => rsp.json(todo.deletedAt ? null : todo));
+    Todo.findByPk(todoId)
+      .then(todo => rsp.json(todo))
+      .catch(error => rsp.status(400).json({error}));
   },
 
   updateById: (req, rsp) => {
@@ -43,10 +44,7 @@ const todoController = {
       {where: {id: todoId}}
     )
       .then(([count]) =>
-        Todo.findByPk(
-          todoId,
-          {attributes: {exclude: ["deletedAt"]}}
-        )
+        Todo.findByPk(todoId)
           .then(todo => rsp.json({
             updated: !!count,
             todo
@@ -58,14 +56,10 @@ const todoController = {
 
   softDeleteById: (req, rsp) => {
     const {todoId} = req.params;
-    Todo.update(
-      {deletedAt: new Date()},
-      {where: {
-        id: todoId,
-        deletedAt: null
-      }}
+    Todo.destroy(
+      {where: {id: todoId}}
     )
-      .then(([count]) => rsp.json({success: !!count}))
+      .then(count => rsp.json({deleted: !!count}))
       .catch(error => rsp.json({error}));
   },
 };

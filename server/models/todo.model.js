@@ -27,17 +27,14 @@ Todo.init(
 
     notes: {
       type: DataTypes.TEXT
-    },
-
-    deletedAt: {
-      type: DataTypes.DATE
     }
-
   },
+
   // Config
   {
     sequelize,
-    modelName: 'todo'
+    modelName: 'todo',
+    paranoid: true
   }
 );
 

@@ -33,17 +33,14 @@ Collection.init(
           encryptString(plain)
         );
       }
-    },
-
-    deletedAt: {
-      type: DataTypes.DATE
     }
-
   },
+  
   // Config
   {
     sequelize,
-    modelName: 'collection'
+    modelName: 'collection',
+    paranoid: true  // enable soft deletion
   }
 );
 
