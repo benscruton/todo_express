@@ -9,7 +9,9 @@ const confirmPassphrase = async (req, rsp, next) => {
   } = req.params;
   const {passphrase, isPlainText} = req.body;
   const reqPassphrase = isPlainText ?
-    passphrase : decryptString(passphrase);
+    passphrase
+    :
+    decryptString({encr: passphrase, keyName: "client"});
     
   let collPassphrase;
   if(collectionId){

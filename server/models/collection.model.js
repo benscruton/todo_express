@@ -23,14 +23,18 @@ Collection.init(
       type: DataTypes.TEXT,
       allowNull: false,
       get(){
-        return decryptString(
-          this.getDataValue("passphrase")
-        );
+        return decryptString({
+          encr: this.getDataValue("passphrase"),
+          keyName: "db"
+        });
       },
       set(plain){
         this.setDataValue(
           "passphrase",
-          encryptString(plain)
+          encryptString({
+            plain,
+            keyName: "db"
+          })
         );
       }
     }

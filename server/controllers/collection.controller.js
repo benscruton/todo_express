@@ -30,7 +30,10 @@ const collectionController = {
       const {passphrase} = req.body;
       rsp.json({
         success: true,
-        encryptedPassphrase: encryptString(passphrase)
+        encryptedPassphrase: encryptString({
+          plain: passphrase,
+          keyName: "client"
+        })
       });
     }
     catch(error){
@@ -44,7 +47,10 @@ const collectionController = {
   // POST to /api/collections/:collectionId
   getCollection: (req, rsp) => {
     const {collectionId} = req.params;
-    const passphrase = decryptString(req.body.passphrase);
+    const passphrase = decryptString({
+      encr: req.body.passphrase,
+      keyName: "client"
+    });
     Collection.findByPk(
       collectionId,
       {
