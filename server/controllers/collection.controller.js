@@ -20,17 +20,25 @@ const collectionController = {
       rsp.json({collectionId: coll.id});
     }
     catch(error){
-      rsp.status(400).json({error});
+      rsp.status(500).json({error});
     }
   },
 
   // POST to /api/collections/:collectionId/access
-  grantCollectionAccess: (req, rsp) => {
-    const {passphrase} = req.body;
-    rsp.json({
-      success: true,
-      encryptedPassphrase: encryptString(passphrase)
-    });
+  encryptPassphrase: (req, rsp) => {
+    try{
+      const {passphrase} = req.body;
+      rsp.json({
+        success: true,
+        encryptedPassphrase: encryptString(passphrase)
+      });
+    }
+    catch(error){
+      rsp.status(500).json({
+        success: false,
+        error
+      });
+    }
   },
 
   // POST to /api/collections/:collectionId
@@ -64,8 +72,8 @@ const collectionController = {
           collection: coll
         });
       })
-      .catch(e => rsp.status(400).json({error: e}));
-  }
+      .catch(error => rsp.status(500).json({error}));
+  },
 };
 
 module.exports = collectionController;

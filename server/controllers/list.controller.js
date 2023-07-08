@@ -25,12 +25,23 @@ const listController = {
       });
     }
     catch(error){
-      rsp.status(400).json({
+      rsp.status(500).json({
         success: false,
         error
       });
     }
   },
+
+  // POST to /api/lists/:listId/todos/order
+  // reorderTodos: (req, rsp) => {
+    // Think about how to do this.  Could just move
+    // one to-do, and add a :todoId param into
+    // the route and a newOrderRank field in the
+    // post body?  Then, update the original,
+    // and increment everything in between.
+    // Or, it could be a one-for-one swap sort
+    // of a thing.
+  // }
 };
 
 module.exports = listController;

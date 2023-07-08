@@ -12,6 +12,6 @@ router.route("/:collectionId")
   .post(confirmPassphrase, collectionController.getCollection);
 
 router.route("/:collectionId/access")
-  .post(confirmPassphrase, collectionController.grantCollectionAccess);
+  .post(confirmPassphrase, collectionController.encryptPassphrase);
 
 module.exports = router;
