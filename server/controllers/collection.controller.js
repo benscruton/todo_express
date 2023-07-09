@@ -44,35 +44,31 @@ const collectionController = {
     }
   },
 
-  // POST to /api/collections/:collectionId
+  // GET to /api/collections/:collectionId
   getCollection: (req, rsp) => {
     const {collectionId} = req.params;
-    const passphrase = decryptString({
-      encr: req.body.passphrase,
-      keyName: "client"
-    });
+
     Collection.findByPk(
       collectionId,
       {
-        attributes: {exclude: ["deletedAt"]},
+        attributes: {exclude: ["passphrase", "deletedAt"]},
         include: {
-          model: List, include: {
+          model: List,
+          attributes: {exclude: ["deletedAt"]},
+          include: {
             model: Todo,
-            order: [
-              [Todo, "orderRank", "ASC"]
-            ]
-          }
-        }
+            attributes: {exclude: ["deletedAt"]}
+          },
+        },
+        order: [
+          [List, Todo, "orderRank", "ASC"]
+        ]
       }
     )
       .then(coll => {
         if(!coll){
           return rsp.status(404).json({success: false});
         }
-        if(passphrase !== coll.passphrase){
-          return rsp.status(401).json({success: false});
-        }
-        coll.passphrase = "";
         rsp.json({
           success: true,
           collection: coll

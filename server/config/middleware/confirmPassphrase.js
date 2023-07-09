@@ -1,17 +1,24 @@
 const {encryptions: {decryptString}} = require("..");
 const {Collection, List, Todo} = require("../../models");
 
+const plainTextPaths = ["/:collectionId/access"];
+
 const confirmPassphrase = async (req, rsp, next) => {
   const {
     collectionId,
     listId,
     todoId
   } = req.params;
-  const {passphrase, isPlainText} = req.body;
-  const reqPassphrase = isPlainText ?
-    passphrase
+  
+  // Passphrase will either come encrypted in the
+  // headers, or in plain text in the request body
+  const reqPassphrase = plainTextPaths.includes(req.route.path) ?
+    req.body.passphrase
     :
-    decryptString({encr: passphrase, keyName: "client"});
+    decryptString({
+      encr: req.headers["x-collection-passphrase"],
+      keyName: "client"
+    });
     
   let collPassphrase;
   if(collectionId){

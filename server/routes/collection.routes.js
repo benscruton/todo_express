@@ -9,7 +9,7 @@ router.route("/")
   .post(validateApiKey, collectionController.create);
 
 router.route("/:collectionId")
-  .post(confirmPassphrase, collectionController.getCollection);
+  .get(confirmPassphrase, collectionController.getCollection);
 
 router.route("/:collectionId/access")
   .post(confirmPassphrase, collectionController.encryptPassphrase);

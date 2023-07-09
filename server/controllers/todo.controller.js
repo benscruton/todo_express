@@ -12,10 +12,13 @@ const todoController = {
       .catch(error => rsp.status(500).json({error}));
   },
   
-  // POST to /api/todos/:todoId
+  // GET to /api/todos/:todoId
   findById: (req, rsp) => {
     const {todoId} = req.params;
-    Todo.findByPk(todoId)
+    Todo.findByPk(
+      todoId,
+      {attributes: {exclude: ["deletedAt"]}}
+    )
       .then(todo => rsp.json(todo))
       .catch(error => rsp.status(400).json({error}));
   },
@@ -25,10 +28,13 @@ const todoController = {
     try{
       const {todoId} = req.params;
       const [count] = await Todo.update(
-        req.body.todo,
+        req.body,
         {where: {id: todoId}}
       );
-      const todo = await Todo.findByPk(todoId)
+      const todo = await Todo.findByPk(
+        todoId,
+        {attributes: {exclude: ["deletedAt"]}}
+      )
       rsp.json({
         updated: !!count,
         todo

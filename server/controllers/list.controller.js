@@ -6,7 +6,7 @@ const listController = {
   addTodo: async (req, rsp) => {
     try{
       const {listId} = req.params;
-      const {todo: todoData} = req.body;
+      const todoData = req.body;
 
       const list = await List.findByPk(
         listId,
