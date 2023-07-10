@@ -64,17 +64,28 @@ const collectionController = {
           [List, Todo, "orderRank", "ASC"]
         ]
       }
+    ).then(coll => {
+      if(!coll){
+        return rsp.status(404).json({success: false});
+      }
+      rsp.json({
+        success: true,
+        collection: coll
+      });
+    }).catch(error => rsp.status(500).json({error}));
+  },
+
+  getAllCollectionNames: (req, rsp) => {
+    Collection.findAll(
+      {
+        attributes: ["name", "id"],
+        order: [["name", "ASC"]]
+      }
     )
-      .then(coll => {
-        if(!coll){
-          return rsp.status(404).json({success: false});
-        }
-        rsp.json({
-          success: true,
-          collection: coll
-        });
-      })
+      .then(collections => rsp.json({collections}))
       .catch(error => rsp.status(500).json({error}));
+
+      
   },
 };
 

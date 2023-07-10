@@ -6,6 +6,7 @@ const {
 } = require("../config/middleware");
 
 router.route("/")
+  .get(collectionController.getAllCollectionNames)
   .post(validateApiKey, collectionController.create);
 
 router.route("/:collectionId")

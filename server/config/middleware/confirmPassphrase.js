@@ -16,7 +16,7 @@ const confirmPassphrase = async (req, rsp, next) => {
     req.body.passphrase
     :
     decryptString({
-      encr: req.headers["x-collection-passphrase"],
+      encr: req.headers["x-collection-token"],
       keyName: "client"
     });
     
