@@ -2,7 +2,7 @@ import {useContext} from "react";
 import axios from "axios";
 import AppContext from "../context/AppContext";
 
-const ListDisplay = ({list}) => {
+const ListDisplay = ({list, listIdx}) => {
   const {
     serverUrl,
     collection,
@@ -10,19 +10,29 @@ const ListDisplay = ({list}) => {
   } = useContext(AppContext);
 
   const toggleComplete = (todoId, idx) => {
-    const newState = !list.todos[idx].isComplete;
-    list.todos[idx].isComplete = newState;
+    const newCompletionStatus = !list.todos[idx].isComplete;
     axios.put(
       `${serverUrl}/api/todos/${todoId}`,
-      {isComplete: newState},
+      {isComplete: newCompletionStatus},
       {headers: {
         ["x-collection-token"]: collection.token
       }}
-    );
+    )
+      .catch(e => console.error(e));
     setCollection({...collection,
       lists: [
-        list,
-        ...collection.lists.filter(l => l.id !== list.id)
+        ...collection.lists.slice(0, listIdx),
+        {...collection.lists[listIdx],
+          todos: [
+            ...collection.lists[listIdx].todos.slice(0, idx),
+            {
+              ...collection.lists[listIdx].todos[idx],
+              isComplete: newCompletionStatus
+            },
+            ...collection.lists[listIdx].todos.slice(idx + 1)
+          ]
+        },
+        ...collection.lists.slice(listIdx + 1)
       ]
     });
   };

@@ -149,6 +149,7 @@ const AddCollection = () => {
           <input
             type = "text"
             name = "passphrase"
+            id = "passphrase"
             value = {inputs.passphrase}
             onChange = {handleChange}
           />
