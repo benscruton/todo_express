@@ -2,7 +2,7 @@ import {useState, useContext} from "react";
 import axios from "axios";
 import AppContext from "../context/AppContext";
 
-const AddTodo = ({list, listIdx}) => {
+const TodoForm = ({list, listIdx, todo, cleanupFunction}) => {
   const {
     serverUrl,
     state: {collection},
@@ -15,7 +15,7 @@ const AddTodo = ({list, listIdx}) => {
     dueDate: ""
   };
 
-  const [inputs, setInputs] = useState(blankFields);
+  const [inputs, setInputs] = useState(todo || blankFields);
   const [inputErrors, setInputErrors] = useState(blankFields);
 
   const handleChange = e => {
@@ -54,21 +54,11 @@ const AddTodo = ({list, listIdx}) => {
             todo: data.todo
           }
         }); 
-        // setCollection({
-        //   ...collection,
-        //   lists: [
-        //     ...collection.lists.slice(0, listIdx),
-        //     {
-        //       ...collection.lists[listIdx],
-        //       todos: [
-        //         ...collection.lists[listIdx].todos,
-        //         data.todo
-        //       ]
-        //     }
-        //   ]
-        // })
       })
       .catch(e => console.error(e));
+    if(cleanupFunction){
+      cleanupFunction();
+    }
   };
 
   return (
@@ -110,4 +100,4 @@ const AddTodo = ({list, listIdx}) => {
   );
 };
 
-export default AddTodo;
+export default TodoForm;

@@ -1,14 +1,16 @@
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import axios from "axios";
 import AppContext from "../context/AppContext";
+import {TodoForm} from ".";
 
 const ListDisplay = ({list, listIdx}) => {
   const {
     serverUrl,
     state: {collection},
-    setCollection,
     dispatch
   } = useContext(AppContext);
+
+  const [showForm, setShowForm] = useState(false);
 
   const toggleComplete = (todoId, todoIdx) => {
     const newCompletionStatus = !list.todos[todoIdx].isComplete;
@@ -28,22 +30,6 @@ const ListDisplay = ({list, listIdx}) => {
         todo: {isComplete: newCompletionStatus}
       }
     });
-    // setCollection({...collection,
-    //   lists: [
-    //     ...collection.lists.slice(0, listIdx),
-    //     {...collection.lists[listIdx],
-    //       todos: [
-    //         ...collection.lists[listIdx].todos.slice(0, idx),
-    //         {
-    //           ...collection.lists[listIdx].todos[idx],
-    //           isComplete: newCompletionStatus
-    //         },
-    //         ...collection.lists[listIdx].todos.slice(idx + 1)
-    //       ]
-    //     },
-    //     ...collection.lists.slice(listIdx + 1)
-    //   ]
-    // });
   };
 
   return (
@@ -64,6 +50,23 @@ const ListDisplay = ({list, listIdx}) => {
               <td>{todo.notes || ""}</td>
             </tr>
           )}
+          <tr>
+            <td>
+              {showForm ?
+                <TodoForm
+                  list = {list}
+                  listIdx = {listIdx}
+                  cleanupFunction = {() => setShowForm(false)}
+                />
+                :
+                <button
+                  onClick = {() => setShowForm(true)}
+                >
+                  +
+                </button>
+              }
+            </td>
+          </tr>
         </tbody>
       </table>
     </>

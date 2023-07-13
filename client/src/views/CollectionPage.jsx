@@ -1,9 +1,12 @@
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import AppContext from "../context/AppContext";
-import {AddTodo, ListDisplay} from "../components";
+import {ListDisplay} from "../components";
 
 const CollectionPage = () => {
   const {state: {collection}} = useContext(AppContext);
+
+  
+
   return (
     <>
       <h1>
@@ -14,10 +17,6 @@ const CollectionPage = () => {
         collection.lists.map((list, idx) =>
           <div key = {list.id}>
             <ListDisplay
-              list = {list}
-              listIdx = {idx}
-            />
-            <AddTodo
               list = {list}
               listIdx = {idx}
             />
