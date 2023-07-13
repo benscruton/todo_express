@@ -8,7 +8,7 @@ const CollectionPage = () => {
   
 
   return (
-    <>
+    <div className = "container">
       <h1>
         Collection: {collection?.name}
       </h1>
@@ -24,7 +24,7 @@ const CollectionPage = () => {
         )
         : <></>
       }
-    </>
+    </div>
   )
 };
 

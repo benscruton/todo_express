@@ -33,7 +33,7 @@ const ListDisplay = ({list, listIdx}) => {
   };
 
   return (
-    <>
+    <div className = "box">
       <h2>{list.name}</h2>
       <table>
         <tbody>
@@ -69,7 +69,7 @@ const ListDisplay = ({list, listIdx}) => {
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

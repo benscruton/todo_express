@@ -1,7 +1,9 @@
-import TodoForm from "./TodoForm";
 import ListDisplay from "./ListDisplay";
+import NavBar from "./NavBar";
+import TodoForm from "./TodoForm";
 
 export {
-  TodoForm,
-  ListDisplay
+  ListDisplay,
+  NavBar,
+  TodoForm
 };

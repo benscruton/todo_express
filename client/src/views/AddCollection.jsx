@@ -5,7 +5,6 @@ import AppContext from "../context/AppContext";
 const AddCollection = () => {
   const {
     serverUrl,
-    state: {availableCollections},
     dispatch,
     loadCollection
   } = useContext(AppContext);
@@ -65,14 +64,6 @@ const AddCollection = () => {
         })
           .then(coll => {
             if(!coll) return;
-            // Create scaled-down object for local storage
-            // const shortCollection = {
-            //   id: inputs.collection,
-            //   name: coll.name,
-            //   token: accessData.encryptedPassphrase
-            // };
-            // Append to availableCollections state variable and
-            // add to localStorage, if not there already
             dispatch({
               type: "addAvailableCollection",
               data: {
@@ -83,25 +74,6 @@ const AddCollection = () => {
                 }
               }
             });
-            // if(availableCollections.filter(c =>
-            //     c.id == inputs.collection
-            //   ).length === 0
-            // ){
-            //   const newAvailableCollections = [
-            //     ...availableCollections,
-            //     collectionData
-            //   ];
-            //   setAvailableCollections(newAvailableCollections);
-            //   localStorage.setItem(
-            //     "todo-collections",
-            //     JSON.stringify(newAvailableCollections)
-            //   );
-            // }
-            // // Set active collection in localStorage
-            // localStorage.setItem(
-            //   "todo-active-collection",
-            //   JSON.stringify(collectionData)
-            // );
           })
           .catch(e => console.error(e));
 
@@ -120,61 +92,75 @@ const AddCollection = () => {
   };
 
   return (
-    <>
+    <div className = "container">
       <form
         onSubmit = {handleSubmit}
+        className = "box"
       >
-        <p>
-          <label htmlFor = "collection">
+        <div className = "field">
+          <label
+            htmlFor = "collection"
+            className = "label"
+          >
             Select Collection
           </label>
-          <select
-            name = "collection"
-            id = "collection"
-            value = {inputs.collection}
-            onChange = {handleChange}
-          >
-            <option
-              value = ""
-              disabled
+          <div className = "control">
+            <select
+              name = "collection"
+              id = "collection"
+              className = "select"
+              value = {inputs.collection}
+              onChange = {handleChange}
             >
-              Select collection:
-            </option>
-
-            {collections.map(c =>
-              <option key={c.id} value={c.id}>
-                {c.name}
+              <option
+                value = ""
+                disabled
+              >
+                Select collection:
               </option>
-            )}
-          </select>
-          <span>
-            {inputErrors.collection}
-          </span>
-        </p>
 
-        <p>
-          <label htmlFor = "passphrase">
+              {collections.map(c =>
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              )}
+            </select>
+          </div>
+          <p className = "help is-danger">
+            {inputErrors.collection}
+          </p>
+        </div>
+
+        <div className = "field">
+          <label
+            htmlFor = "passphrase"
+            className = "label"
+          >
             Collection Passphrase
           </label>
-          <input
-            type = "text"
-            name = "passphrase"
-            id = "passphrase"
-            value = {inputs.passphrase}
-            onChange = {handleChange}
-          />
-          <span>
+          <div className = "control">
+            <input
+              type = "text"
+              name = "passphrase"
+              id = "passphrase"
+              className = "input"
+              value = {inputs.passphrase}
+              onChange = {handleChange}
+            />
+          </div>
+          <p className = "help is-danger">
             {inputErrors.passphrase}
-          </span>
-        </p>
+          </p>
+        </div>
 
         <button
           type = "submit"
+          className = "button"
         >
           Submit
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

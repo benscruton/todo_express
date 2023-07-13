@@ -1,18 +1,17 @@
 import './App.css';
 import {
-  useState,
   useEffect,
   useReducer
 } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import axios from "axios";
 import AppContext from "./context/AppContext";
 import {collectionReducer} from './reducers';
+import {NavBar} from './components';
 import {
   AddCollection,
   CollectionPage
@@ -69,13 +68,9 @@ function App() {
         loadCollection
       }}>
         <Router>
-          <Link to="/">home</Link>
-          |
-          <Link to="/collections/add">add</Link>
-          |
-          <Link to="/collections/view">show</Link>
-          |
-          <span onClick={() => console.log(state)}>Log state</span>
+          
+
+          <NavBar />
 
           <Routes>
             <Route path="/" element={
