@@ -5,12 +5,13 @@ import AppContext from "../context/AppContext";
 const ListDisplay = ({list, listIdx}) => {
   const {
     serverUrl,
-    collection,
-    setCollection
+    state: {collection},
+    setCollection,
+    dispatch
   } = useContext(AppContext);
 
-  const toggleComplete = (todoId, idx) => {
-    const newCompletionStatus = !list.todos[idx].isComplete;
+  const toggleComplete = (todoId, todoIdx) => {
+    const newCompletionStatus = !list.todos[todoIdx].isComplete;
     axios.put(
       `${serverUrl}/api/todos/${todoId}`,
       {isComplete: newCompletionStatus},
@@ -19,28 +20,35 @@ const ListDisplay = ({list, listIdx}) => {
       }}
     )
       .catch(e => console.error(e));
-    setCollection({...collection,
-      lists: [
-        ...collection.lists.slice(0, listIdx),
-        {...collection.lists[listIdx],
-          todos: [
-            ...collection.lists[listIdx].todos.slice(0, idx),
-            {
-              ...collection.lists[listIdx].todos[idx],
-              isComplete: newCompletionStatus
-            },
-            ...collection.lists[listIdx].todos.slice(idx + 1)
-          ]
-        },
-        ...collection.lists.slice(listIdx + 1)
-      ]
+    dispatch({
+      type: "updateTodo",
+      data: {
+        listIdx,
+        todoIdx,
+        todo: {isComplete: newCompletionStatus}
+      }
     });
+    // setCollection({...collection,
+    //   lists: [
+    //     ...collection.lists.slice(0, listIdx),
+    //     {...collection.lists[listIdx],
+    //       todos: [
+    //         ...collection.lists[listIdx].todos.slice(0, idx),
+    //         {
+    //           ...collection.lists[listIdx].todos[idx],
+    //           isComplete: newCompletionStatus
+    //         },
+    //         ...collection.lists[listIdx].todos.slice(idx + 1)
+    //       ]
+    //     },
+    //     ...collection.lists.slice(listIdx + 1)
+    //   ]
+    // });
   };
 
   return (
     <>
       <h2>{list.name}</h2>
-
       <table>
         <tbody>
           {list.todos.map((todo, idx) =>

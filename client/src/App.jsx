@@ -1,5 +1,9 @@
 import './App.css';
-import {useState, useEffect} from 'react';
+import {
+  useState,
+  useEffect,
+  useReducer
+} from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,6 +12,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import AppContext from "./context/AppContext";
+import {collectionReducer} from './reducers';
 import {
   AddCollection,
   CollectionPage
@@ -16,27 +21,34 @@ import {
 const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://localhost:3038");
 
 function App() {
-  const [availableCollections, setAvailableCollections] = useState(
-    JSON.parse(localStorage.getItem("todo-collections") || "[]")
-  );
-  const [collection, setCollection] = useState(null);
+  const initialState = {
+    collection: null,
+    availableCollections: JSON.parse(
+      localStorage.getItem("todo-collections") || "[]"
+    )
+  };
 
-  const loadCollection = ({collectionId, token}) => {
-    return axios.get(
+  const [state, dispatch] = useReducer(
+    collectionReducer,
+    initialState
+  );
+
+  const loadCollection = async ({collectionId, token}) => {
+    const rsp = await axios.get(
       `${serverUrl}/api/collections/${collectionId}`,
       {headers: {
         "x-collection-token": token
       }}
-    )
-      .then(({data}) => {
-        if(data.success){
-          setCollection({
-            ...data.collection,
-            token
-          });
-          return data.collection;
-        }
-      })
+    );
+    const {success, collection} = rsp.data;
+    if(success){
+      collection.token = token;
+      dispatch({
+        type: "setCollection",
+        data: {collection}
+      });
+      return collection;
+    }
   };
 
   useEffect(() => {
@@ -52,10 +64,8 @@ function App() {
     <div className="App">
       <AppContext.Provider value={{
         serverUrl,
-        availableCollections,
-        setAvailableCollections,
-        collection,
-        setCollection,
+        state,
+        dispatch,
         loadCollection
       }}>
         <Router>
@@ -65,7 +75,7 @@ function App() {
           |
           <Link to="/collections/view">show</Link>
           |
-          <span onClick={() => console.log(collection)}>Log collection</span>
+          <span onClick={() => console.log(state)}>Log state</span>
 
           <Routes>
             <Route path="/" element={

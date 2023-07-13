@@ -5,8 +5,9 @@ import AppContext from "../context/AppContext";
 const AddTodo = ({list, listIdx}) => {
   const {
     serverUrl,
-    collection,
-    setCollection
+    state: {collection},
+    // setCollection
+    dispatch
   } = useContext(AppContext);
 
   const blankFields = {
@@ -29,6 +30,7 @@ const AddTodo = ({list, listIdx}) => {
   };
 
   const handleSubmit = e => {
+    console.log(collection);
     e.preventDefault();
     if(!inputs.text){
       return setInputErrors({
@@ -45,19 +47,26 @@ const AddTodo = ({list, listIdx}) => {
     )
       .then(({data}) => {
         if(!data.success) return;
-        setCollection({
-          ...collection,
-          lists: [
-            ...collection.lists.slice(0, listIdx),
-            {
-              ...collection.lists[listIdx],
-              todos: [
-                ...collection.lists[listIdx].todos,
-                data.todo
-              ]
-            }
-          ]
-        })
+        dispatch({
+          type: "addTodo",
+          data: {
+            listIdx,
+            todo: data.todo
+          }
+        }); 
+        // setCollection({
+        //   ...collection,
+        //   lists: [
+        //     ...collection.lists.slice(0, listIdx),
+        //     {
+        //       ...collection.lists[listIdx],
+        //       todos: [
+        //         ...collection.lists[listIdx].todos,
+        //         data.todo
+        //       ]
+        //     }
+        //   ]
+        // })
       })
       .catch(e => console.error(e));
   };

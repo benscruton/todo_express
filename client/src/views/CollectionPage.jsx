@@ -3,7 +3,7 @@ import AppContext from "../context/AppContext";
 import {AddTodo, ListDisplay} from "../components";
 
 const CollectionPage = () => {
-  const {collection} = useContext(AppContext);
+  const {state: {collection}} = useContext(AppContext);
   return (
     <>
       <h1>

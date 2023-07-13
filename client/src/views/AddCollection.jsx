@@ -5,8 +5,8 @@ import AppContext from "../context/AppContext";
 const AddCollection = () => {
   const {
     serverUrl,
-    availableCollections,
-    setAvailableCollections,
+    state: {availableCollections},
+    dispatch,
     loadCollection
   } = useContext(AppContext);
 
@@ -66,32 +66,42 @@ const AddCollection = () => {
           .then(coll => {
             if(!coll) return;
             // Create scaled-down object for local storage
-            const collectionData = {
-              id: inputs.collection,
-              name: coll.name,
-              token: accessData.encryptedPassphrase
-            };
+            // const shortCollection = {
+            //   id: inputs.collection,
+            //   name: coll.name,
+            //   token: accessData.encryptedPassphrase
+            // };
             // Append to availableCollections state variable and
             // add to localStorage, if not there already
-            if(availableCollections.filter(c =>
-                c.id == inputs.collection
-              ).length === 0
-            ){
-              const newAvailableCollections = [
-                ...availableCollections,
-                collectionData
-              ];
-              setAvailableCollections(newAvailableCollections);
-              localStorage.setItem(
-                "todo-collections",
-                JSON.stringify(newAvailableCollections)
-              );
-            }
-            // Set active collection in localStorage
-            localStorage.setItem(
-              "todo-active-collection",
-              JSON.stringify(collectionData)
-            );
+            dispatch({
+              type: "addAvailableCollection",
+              data: {
+                collectionData: {
+                  id: inputs.collection,
+                  name: coll.name,
+                  token: accessData.encryptedPassphrase
+                }
+              }
+            });
+            // if(availableCollections.filter(c =>
+            //     c.id == inputs.collection
+            //   ).length === 0
+            // ){
+            //   const newAvailableCollections = [
+            //     ...availableCollections,
+            //     collectionData
+            //   ];
+            //   setAvailableCollections(newAvailableCollections);
+            //   localStorage.setItem(
+            //     "todo-collections",
+            //     JSON.stringify(newAvailableCollections)
+            //   );
+            // }
+            // // Set active collection in localStorage
+            // localStorage.setItem(
+            //   "todo-active-collection",
+            //   JSON.stringify(collectionData)
+            // );
           })
           .catch(e => console.error(e));
 
