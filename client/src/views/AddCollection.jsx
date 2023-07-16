@@ -126,7 +126,7 @@ const AddCollection = () => {
               )}
             </select>
           </div>
-          <p className = "help is-danger">
+          <p className = "help is-danger-dark">
             {inputErrors.collection}
           </p>
         </div>
@@ -148,7 +148,7 @@ const AddCollection = () => {
               onChange = {handleChange}
             />
           </div>
-          <p className = "help is-danger">
+          <p className = "help is-danger-dark">
             {inputErrors.passphrase}
           </p>
         </div>

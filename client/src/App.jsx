@@ -17,7 +17,7 @@ import {
   CollectionPage
 } from "./views";
 
-const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://localhost:3038");
+const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://192.168.0.163:3038");
 
 function App() {
   const initialState = {

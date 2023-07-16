@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {useContext, useState} from "react";
 import AppContext from "../context/AppContext";
 
@@ -9,10 +9,10 @@ const NavBar = () => {
   const toggleMenu = () => setMenuActive(!menuActive);
 
   return (
-    <nav className = "navbar">
+    <nav className = "navbar is-black mb-4 has-shadow">
 
       <div className = "navbar-brand">
-        <div class = "navbar-item" href="https://bulma.io">
+        <div className = "navbar-item has-text-primary" href="https://bulma.io">
           LISTY McLISTFACE
         </div>
 
@@ -28,30 +28,36 @@ const NavBar = () => {
       </div>
 
       <div className = {`navbar-menu ${menuActive ? "is-active" : ""}`}>
-        <div className = "navbar-start">
-          <Link
+        <div className = "navbar-start ml-5">
+          <NavLink
             to="/"
-            className = "navbar-item"
+            className = {({isActive}) =>
+              `navbar-item px-4 ${isActive ? "is-active has-background-primary has-text-black" : ""}`
+            }
             onClick = {() => setMenuActive(false)}
           >
             Home
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/collections/add"
-            className = "navbar-item"
+            className = {({isActive}) =>
+              `navbar-item px-4 ${isActive ? "is-active has-background-primary has-text-black" : ""}`
+            }
             onClick = {() => setMenuActive(false)}
           >
             Add
-          </Link>
+          </NavLink>
           
-          <Link
+          <NavLink
             to="/collections/view"
-            className = "navbar-item"
+            className = {({isActive}) =>
+              `navbar-item px-4 ${isActive ? "is-active has-background-primary has-text-black" : ""}`
+            }
             onClick = {() => setMenuActive(false)}
           >
             Show
-          </Link>
+          </NavLink>
         </div>
 
         <div className = "navbar-end">

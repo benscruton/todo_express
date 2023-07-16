@@ -7,7 +7,8 @@ const updateTodo = (state, data) => {
       ...collection,
       lists: [
         ...collection.lists.slice(0, listIdx),
-        {...collection.lists[listIdx],
+        {
+          ...collection.lists[listIdx],
           todos: [
             ...collection.lists[listIdx].todos.slice(0, todoIdx),
             {

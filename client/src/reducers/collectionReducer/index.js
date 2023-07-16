@@ -1,11 +1,13 @@
 import addAvailableCollection from "./addAvailableCollection";
 import addTodo from "./addTodo";
+import deleteTodo from "./deleteTodo";
 import setCollection from "./setCollection";
 import updateTodo from "./updateTodo";
 
 const methods = {
   addAvailableCollection,
   addTodo,
+  deleteTodo,
   setCollection,
   updateTodo
 }

@@ -1,7 +1,7 @@
 import {useContext, useState} from "react";
 import axios from "axios";
 import AppContext from "../context/AppContext";
-import {TodoForm} from ".";
+import TodoForm from "./TodoForm";
 
 const ListDisplay = ({list, listIdx}) => {
   const {
@@ -10,7 +10,18 @@ const ListDisplay = ({list, listIdx}) => {
     dispatch
   } = useContext(AppContext);
 
-  const [showForm, setShowForm] = useState(false);
+  const [expandedItems, setExpandedItems] = useState([]);
+
+  const expandItem = id => {
+    setExpandedItems([
+      ...expandedItems,
+      id
+    ])
+  };
+
+  const contractItem = id => setExpandedItems(
+    expandedItems.filter(item => item !== id)
+  );
 
   const toggleComplete = (todoId, todoIdx) => {
     const newCompletionStatus = !list.todos[todoIdx].isComplete;
@@ -34,41 +45,64 @@ const ListDisplay = ({list, listIdx}) => {
 
   return (
     <div className = "box">
-      <h2>{list.name}</h2>
-      <table>
-        <tbody>
-          {list.todos.map((todo, idx) =>
-            <tr key = {todo.id}>
-              <td
-                style = {{textDecoration: todo.isComplete ? "line-through" : "none"}}
-                value = {todo.id}
-                onClick = {() => toggleComplete(todo.id, idx)}
+      <h2 className = "subtitle is-size-3 has-text-centered">
+        {list.name}
+      </h2>
+
+      <ul>
+        {[
+          ...list.todos,
+          null
+        ].map((todo, todoIdx) => {
+          const id = todo?.id || "new";
+          const isExpanded = expandedItems.includes(id);
+          return (
+            <li
+              key = {id}
+              className = {`my-2 ${id === "new" ? "has-text-centered" : ""}`}
+            >
+              <button
+                className = "button is-small mr-3"
+                onClick = {() => 
+                  isExpanded ?
+                    contractItem(id) : expandItem(id)
+                }
               >
-                {todo.text}
-              </td>
-              <td>{todo.dueDate || ""}</td>
-              <td>{todo.notes || ""}</td>
-            </tr>
-          )}
-          <tr>
-            <td>
-              {showForm ?
+                {isExpanded ?
+                  "x"
+                  :
+                  (id === "new" ? "+" : "v")
+                }
+              </button>
+              {todo?.id ?
+                <span
+                  style = {{textDecoration: todo.isComplete ? "line-through" : "none"}}
+                  value = {todo.id}
+                  onClick = {() => toggleComplete(todo.id, todoIdx)}
+                >
+                  {todo.text}
+                </span>
+                :
+                <></>
+              }
+              
+              {isExpanded ?
                 <TodoForm
                   list = {list}
                   listIdx = {listIdx}
-                  cleanupFunction = {() => setShowForm(false)}
+                  todo = {todo}
+                  todoIdx = {todoIdx}
+                  cleanupFunction = {() => {
+                    contractItem(id)
+                  }}
                 />
                 :
-                <button
-                  onClick = {() => setShowForm(true)}
-                >
-                  +
-                </button>
+                <></>
               }
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
