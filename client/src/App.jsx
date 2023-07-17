@@ -14,7 +14,8 @@ import {collectionReducer} from './reducers';
 import {NavBar} from './components';
 import {
   AddCollection,
-  CollectionPage
+  CollectionPage,
+  Landing
 } from "./views";
 
 const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://192.168.0.163:3038");
@@ -24,7 +25,8 @@ function App() {
     collection: null,
     availableCollections: JSON.parse(
       localStorage.getItem("todo-collections") || "[]"
-    )
+    ),
+    isCollectionLoaded: false
   };
 
   const [state, dispatch] = useReducer(
@@ -55,8 +57,12 @@ function App() {
       localStorage.getItem("todo-active-collection") || "{}"
     );
     if(collectionId && token){
-      loadCollection({collectionId, token});
+      loadCollection({collectionId, token})
+        .then(() => dispatch({
+          type: "markCollectionLoaded"
+        }));
     }
+    
   }, []);
 
   return (
@@ -68,15 +74,11 @@ function App() {
         loadCollection
       }}>
         <Router>
-          
-
           <NavBar />
 
           <Routes>
             <Route path="/" element={
-              <p>
-                home
-              </p>
+              <Landing />
             }/>
 
             <Route path="/collections/add" element={

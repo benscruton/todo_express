@@ -30,16 +30,6 @@ const NavBar = () => {
       <div className = {`navbar-menu ${menuActive ? "is-active" : ""}`}>
         <div className = "navbar-start ml-5">
           <NavLink
-            to="/"
-            className = {({isActive}) =>
-              `navbar-item px-4 ${isActive ? "is-active has-background-primary has-text-black" : ""}`
-            }
-            onClick = {() => setMenuActive(false)}
-          >
-            Home
-          </NavLink>
-
-          <NavLink
             to="/collections/add"
             className = {({isActive}) =>
               `navbar-item px-4 ${isActive ? "is-active has-background-primary has-text-black" : ""}`
