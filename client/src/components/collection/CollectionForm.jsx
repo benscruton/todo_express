@@ -1,20 +1,13 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useContext} from "react";
 import axios from "axios";
-import AppContext from "../context/AppContext";
+import AppContext from "../../context/AppContext";
 
-const AddCollection = () => {
+const CollectionForm = ({collections}) => {
   const {
     serverUrl,
     dispatch,
     loadCollection
   } = useContext(AppContext);
-
-  const [collections, setCollections] = useState([]);
-  useEffect(() => {
-    axios.get(`${serverUrl}/api/collections`)
-      .then(({data}) => setCollections(data.collections))
-      .catch(e => console.error(e));
-  }, []);
 
   const blankFields = {
     collection: "",
@@ -23,6 +16,12 @@ const AddCollection = () => {
 
   const [inputs, setInputs] = useState(blankFields);
   const [inputErrors, setInputErrors] = useState(blankFields);
+  const [showPassphrase, setShowPassphrase] = useState(false);
+
+  const toggleShowPassphrase = e => {
+    e.preventDefault();
+    setShowPassphrase(!showPassphrase);
+  };
 
   const handleChange = e => {
     setInputs({...inputs,
@@ -59,7 +58,7 @@ const AddCollection = () => {
       .then(({data: accessData}) => {
         // Set collection state variable
         loadCollection({
-          collectionId: inputs.collection,
+          id: inputs.collection,
           token: accessData.encryptedPassphrase
         })
           .then(coll => {
@@ -68,8 +67,7 @@ const AddCollection = () => {
               type: "addAvailableCollection",
               data: {
                 collectionData: {
-                  id: inputs.collection,
-                  name: coll.name,
+                  ...coll,
                   token: accessData.encryptedPassphrase
                 }
               }
@@ -92,11 +90,14 @@ const AddCollection = () => {
   };
 
   return (
-    <div className = "container">
-      <form
+    <form
         onSubmit = {handleSubmit}
-        className = "box"
+        className = "box has-background-light"
       >
+        <h2 className = "title has-text-centered">
+          Join Collection
+        </h2>
+
         <div className = "field">
           <label
             htmlFor = "collection"
@@ -140,7 +141,7 @@ const AddCollection = () => {
           </label>
           <div className = "control">
             <input
-              type = "text"
+              type = {showPassphrase ? "text" : "password"}
               name = "passphrase"
               id = "passphrase"
               className = "input"
@@ -148,6 +149,13 @@ const AddCollection = () => {
               onChange = {handleChange}
             />
           </div>
+          <button
+            className = "button"
+            onClick = {toggleShowPassphrase}
+          >
+            {showPassphrase ? "Hide" : "Show"}
+          </button>
+
           <p className = "help is-danger-dark">
             {inputErrors.passphrase}
           </p>
@@ -160,8 +168,7 @@ const AddCollection = () => {
           Submit
         </button>
       </form>
-    </div>
   );
 };
 
-export default AddCollection;
+export default CollectionForm;

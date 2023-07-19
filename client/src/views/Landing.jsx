@@ -12,9 +12,9 @@ const Landing = () => {
   useEffect(() => {
     if(isCollectionLoaded){
       navigate(collection ?
-        "collections/view"
+        "/collections/view"
         :
-        "collections/add"
+        "/collections"
       );
     }
   }, [isCollectionLoaded]);

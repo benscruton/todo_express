@@ -13,12 +13,12 @@ import AppContext from "./context/AppContext";
 import {collectionReducer} from './reducers';
 import {NavBar} from './components';
 import {
-  AddCollection,
+  ManageCollections,
   CollectionPage,
   Landing
 } from "./views";
 
-const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://192.168.0.163:3038");
+const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://localhost:3038");
 
 function App() {
   const initialState = {
@@ -34,13 +34,14 @@ function App() {
     initialState
   );
 
-  const loadCollection = async ({collectionId, token}) => {
+  const loadCollection = async ({id, token}) => {
     const rsp = await axios.get(
-      `${serverUrl}/api/collections/${collectionId}`,
+      `${serverUrl}/api/collections/${id}`,
       {headers: {
         "x-collection-token": token
       }}
     );
+
     const {success, collection} = rsp.data;
     if(success){
       collection.token = token;
@@ -53,11 +54,11 @@ function App() {
   };
 
   useEffect(() => {
-    const {id: collectionId, token} = JSON.parse(
+    const {id, token} = JSON.parse(
       localStorage.getItem("todo-active-collection") || "{}"
     );
-    if(collectionId && token){
-      loadCollection({collectionId, token})
+    if(id && token){
+      loadCollection({id, token})
         .then(() => dispatch({
           type: "markCollectionLoaded"
         }));
@@ -81,8 +82,8 @@ function App() {
               <Landing />
             }/>
 
-            <Route path="/collections/add" element={
-              <AddCollection />
+            <Route path="/collections" element={
+              <ManageCollections />
             }/>
 
             <Route path="/collections/view" element={

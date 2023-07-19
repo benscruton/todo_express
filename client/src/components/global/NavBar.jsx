@@ -1,6 +1,6 @@
 import {NavLink} from "react-router-dom";
 import {useContext, useState} from "react";
-import AppContext from "../context/AppContext";
+import AppContext from "../../context/AppContext";
 
 const NavBar = () => {
   const {state} = useContext(AppContext);
@@ -30,13 +30,13 @@ const NavBar = () => {
       <div className = {`navbar-menu ${menuActive ? "is-active" : ""}`}>
         <div className = "navbar-start ml-5">
           <NavLink
-            to="/collections/add"
+            to="/collections" end
             className = {({isActive}) =>
               `navbar-item px-4 ${isActive ? "is-active has-background-primary has-text-black" : ""}`
             }
             onClick = {() => setMenuActive(false)}
           >
-            Add
+            Manage Collections
           </NavLink>
           
           <NavLink
@@ -46,7 +46,7 @@ const NavBar = () => {
             }
             onClick = {() => setMenuActive(false)}
           >
-            Show
+            View Collection
           </NavLink>
         </div>
 

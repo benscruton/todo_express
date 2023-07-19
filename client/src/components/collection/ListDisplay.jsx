@@ -1,7 +1,7 @@
 import {useContext, useState} from "react";
 import axios from "axios";
-import AppContext from "../context/AppContext";
-import TodoForm from "./TodoForm";
+import AppContext from "../../context/AppContext";
+import TodoForm from "../todo/TodoForm";
 
 const ListDisplay = ({list, listIdx}) => {
   const {

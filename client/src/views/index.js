@@ -1,9 +1,9 @@
-import AddCollection from "./AddCollection";
 import CollectionPage from "./CollectionPage";
 import Landing from "./Landing";
+import ManageCollections from "./ManageCollections";
 
 export {
-  AddCollection,
   CollectionPage,
-  Landing
+  Landing,
+  ManageCollections
 };

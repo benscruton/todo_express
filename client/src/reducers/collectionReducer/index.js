@@ -2,6 +2,7 @@ import addAvailableCollection from "./addAvailableCollection";
 import addTodo from "./addTodo";
 import deleteTodo from "./deleteTodo";
 import markCollectionLoaded from "./markCollectionLoaded";
+import removeAvailableCollection from "./removeAvailableCollection";
 import setCollection from "./setCollection";
 import updateTodo from "./updateTodo";
 
@@ -10,6 +11,7 @@ const methods = {
   addTodo,
   deleteTodo,
   markCollectionLoaded,
+  removeAvailableCollection,
   setCollection,
   updateTodo
 }

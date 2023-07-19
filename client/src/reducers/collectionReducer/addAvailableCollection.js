@@ -3,12 +3,21 @@ const addAvailableCollection = (state, data) => {
   const {collectionData} = data;
 
   const isNewCollection = (availableCollections.filter(c =>
-    c.id == collectionData.id
+    c.id === collectionData.id
   ).length === 0);
+
+  const collection = {
+    id: collectionData.id,
+    name: collectionData.name,
+    lists: collectionData.lists.map(
+      l => l.name
+    ),
+    token: collectionData.token
+  };
   
   const newAvailableCollections = isNewCollection ?
     [
-      collectionData,
+      collection,
       ...availableCollections
     ]
     :
@@ -25,7 +34,7 @@ const addAvailableCollection = (state, data) => {
   // Set active collection in localStorage either way
   localStorage.setItem(
     "todo-active-collection",
-    JSON.stringify(collectionData)
+    JSON.stringify(collection)
   );
 
   return {...state,

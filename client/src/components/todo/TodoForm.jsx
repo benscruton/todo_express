@@ -1,6 +1,6 @@
 import {useState, useContext} from "react";
 import axios from "axios";
-import AppContext from "../context/AppContext";
+import AppContext from "../../context/AppContext";
 
 const TodoForm = ({
   list,
