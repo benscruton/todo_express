@@ -69,9 +69,22 @@ const ListDisplay = ({list, listIdx}) => {
                 }
               >
                 {isExpanded ?
-                  "x"
+                  <i
+                    className = "bi-x-circle is-size-5"
+                    aria-label = "Close"
+                  ></i>
                   :
-                  (id === "new" ? "+" : "v")
+                  (id === "new" ? 
+                    <i
+                      className = "bi-plus-circle is-size-5"
+                      aria-label = "Add New"
+                    ></i>
+                    :
+                    <i
+                      className = "bi-chevron-down is-size-5"
+                      aria-label = "Expand"
+                    ></i>
+                  )
                 }
               </button>
               {todo?.id ?

@@ -1,10 +1,12 @@
 import {useState, useContext} from "react";
 import axios from "axios";
 import AppContext from "../../context/AppContext";
+import AvailableCollectionCard from "./AvailableCollectionCard";
 
 const CollectionForm = ({collections}) => {
   const {
     serverUrl,
+    state: {availableCollections},
     dispatch,
     loadCollection
   } = useContext(AppContext);
@@ -19,8 +21,12 @@ const CollectionForm = ({collections}) => {
   const [showPassphrase, setShowPassphrase] = useState(false);
 
   const toggleShowPassphrase = e => {
-    e.preventDefault();
-    setShowPassphrase(!showPassphrase);
+    if(
+      e._reactName === "onClick"
+      || (e._reactName === "onKeyDown" && ["Space", "Enter"].includes(e.code))
+    ){
+      setShowPassphrase(!showPassphrase);
+    }
   };
 
   const handleChange = e => {
@@ -91,17 +97,21 @@ const CollectionForm = ({collections}) => {
 
   return (
     <form
-        onSubmit = {handleSubmit}
-        className = "box has-background-light"
-      >
-        <h2 className = "title has-text-centered">
+      onSubmit = {handleSubmit}
+      className = "card has-background-info"
+    >
+      <div className = "card-header has-text-centered">
+        <h2 className = "card-header-title is-centered has-text-info-light">
           Join Collection
         </h2>
+      </div>
+
+      <div className = "card-content">
 
         <div className = "field">
           <label
             htmlFor = "collection"
-            className = "label"
+            className = "label has-text-link-light"
           >
             Select Collection
           </label>
@@ -109,7 +119,7 @@ const CollectionForm = ({collections}) => {
             <select
               name = "collection"
               id = "collection"
-              className = "select"
+              className = "select has-text-info-dark"
               value = {inputs.collection}
               onChange = {handleChange}
             >
@@ -120,10 +130,22 @@ const CollectionForm = ({collections}) => {
                 Select collection:
               </option>
 
-              {collections.map(c =>
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
+              {collections
+                .filter(c =>
+                  !availableCollections
+                    .map(ac => ac.id)
+                    .includes(
+                      c.id
+                    )
+                )
+                .map(c =>
+                  <option
+                    key={c.id}
+                    value={c.id}
+                    className = "has-text-info-dark"
+                  >
+                    {c.name}
+                  </option>
               )}
             </select>
           </div>
@@ -135,7 +157,7 @@ const CollectionForm = ({collections}) => {
         <div className = "field">
           <label
             htmlFor = "passphrase"
-            className = "label"
+            className = "label has-text-link-light"
           >
             Collection Passphrase
           </label>
@@ -144,14 +166,17 @@ const CollectionForm = ({collections}) => {
               type = {showPassphrase ? "text" : "password"}
               name = "passphrase"
               id = "passphrase"
-              className = "input"
+              className = "input has-text-info-dark"
               value = {inputs.passphrase}
               onChange = {handleChange}
             />
-            <span className = "icon is-right has-text-grey">
+            <span className = "icon is-right has-text-info">
               <i
                 className = {`clickable ${showPassphrase ? "bi-eye-slash-fill" : "bi-eye-fill"}`}
                 onClick = {toggleShowPassphrase}
+                tabIndex = {0}
+                onKeyDown = {toggleShowPassphrase}
+                aria-label = {showPassphrase ? "Hide text" : "Show text"}
               />
             </span>
           </div>
@@ -161,13 +186,16 @@ const CollectionForm = ({collections}) => {
           </p>
         </div>
 
-        <button
-          type = "submit"
-          className = "button"
-        >
-          Submit
-        </button>
-      </form>
+        <div className = "has-text-centered">
+          <button
+            type = "submit"
+            className = "button has-background-info-light has-text-info-dark mt-4"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
   );
 };
 

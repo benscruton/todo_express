@@ -22,20 +22,57 @@ const ManageCollections = () => {
   
   return (
     <div className = "container">
-      <CollectionForm
-        collections = {collections}
-      />
+      <div className = "columns is-multiline is-centered">
+        <div className = "column is-4-tablet is-3-widescreen">
+          <CollectionForm
+            collections = {collections}
+          />
+        </div>
 
-      <h2 className = "title has-text-centered mt-4 mb-2">
-        Available Collections:
-      </h2>
+        {availableCollections.map(availableCollection =>
+          <div
+            key = {availableCollection.id}
+            className = "column is-4-tablet is-3-widescreen"
+          >
+            <AvailableCollectionCard
+              availableCollection = {availableCollection}
+            />
+          </div>
+        )}
 
-      {availableCollections.map(availableCollection =>
-        <AvailableCollectionCard
-          key = {availableCollection.id}
-          availableCollection = {availableCollection}
-        />
-      )}
+
+
+        {/* {availableCollections.map(availableCollection =>
+          <div
+            key = {availableCollection.id}
+            className = "column is-4-tablet is-3-widescreen"
+          >
+            <AvailableCollectionCard
+              availableCollection = {availableCollection}
+            />
+          </div>
+        )}
+        {availableCollections.map(availableCollection =>
+          <div
+            key = {availableCollection.id}
+            className = "column is-4-tablet is-3-widescreen"
+          >
+            <AvailableCollectionCard
+              availableCollection = {availableCollection}
+            />
+          </div>
+        )}
+        {availableCollections.map(availableCollection =>
+          <div
+            key = {availableCollection.id}
+            className = "column is-4-tablet is-3-widescreen"
+          >
+            <AvailableCollectionCard
+              availableCollection = {availableCollection}
+            />
+          </div>
+        )} */}
+      </div>
     </div>
   );
 };

@@ -185,15 +185,31 @@ const TodoForm = ({
             type = "submit"
             className = "button is-black has-text-white mx-3"
           >
-            {todo ? "Update" : "Add"} todo
+            <span className = "icon">
+              <i
+                className = "bi-check-circle-fill"
+                aria-hidden
+              />
+            </span>
+            <span>
+              {todo ? "Update" : "Add"} todo
+            </span>
           </button>
 
           {todo?.id ?
             <button
               className = "button is-danger"
               onClick = {e => handleDelete(e, todo)}
-            >   
-              Delete todo
+            >
+              <span className = "icon">
+                <i
+                  className = "bi-trash3-fill"
+                  aria-hidden
+                />
+              </span>
+              <span>
+                Delete todo
+              </span>
             </button>
             :
             <></>

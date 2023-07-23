@@ -26,9 +26,9 @@ const AvailableCollectionCard = ({availableCollection}) => {
   };
   
   return (
-    <div className = "card">
+    <div className = {`card ${isActiveCollection ? "has-background-white" : "has-background-light"}`}>
       <div className = "card-header">
-        <h3 className = "card-header-title">
+        <h3 className = "card-header-title is-centered">
           {availableCollection.name}
         </h3>
       </div>
@@ -47,12 +47,12 @@ const AvailableCollectionCard = ({availableCollection}) => {
           </div>
           :
           <a
-            className = "card-footer-item"
+            className = "card-footer-item has-background-white"
             onClick = {() => {
-              loadCollection(collection)
+              loadCollection(availableCollection)
             }}
           >
-            Use this collection
+            Activate collection
           </a>
         }
 
