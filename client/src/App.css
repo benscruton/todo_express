@@ -1,5 +1,6 @@
-.dropdown-menu.is-fullwidth{
-  width: 80vw;
+.clickable{
+  pointer-events: all;
+  cursor: pointer;
 }
 
 

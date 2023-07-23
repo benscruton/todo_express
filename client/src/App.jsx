@@ -40,7 +40,14 @@ function App() {
       {headers: {
         "x-collection-token": token
       }}
-    );
+    )
+      .catch(error => {
+        console.error(error);
+        return {data: {
+          success: false,
+          error
+        }}
+      });
 
     const {success, collection} = rsp.data;
     if(success){

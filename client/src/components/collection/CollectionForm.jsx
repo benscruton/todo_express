@@ -139,7 +139,7 @@ const CollectionForm = ({collections}) => {
           >
             Collection Passphrase
           </label>
-          <div className = "control">
+          <div className = "control has-icons-right">
             <input
               type = {showPassphrase ? "text" : "password"}
               name = "passphrase"
@@ -148,13 +148,13 @@ const CollectionForm = ({collections}) => {
               value = {inputs.passphrase}
               onChange = {handleChange}
             />
+            <span className = "icon is-right has-text-grey">
+              <i
+                className = {`clickable ${showPassphrase ? "bi-eye-slash-fill" : "bi-eye-fill"}`}
+                onClick = {toggleShowPassphrase}
+              />
+            </span>
           </div>
-          <button
-            className = "button"
-            onClick = {toggleShowPassphrase}
-          >
-            {showPassphrase ? "Hide" : "Show"}
-          </button>
 
           <p className = "help is-danger-dark">
             {inputErrors.passphrase}

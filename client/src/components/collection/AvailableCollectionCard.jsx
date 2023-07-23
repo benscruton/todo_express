@@ -15,7 +15,7 @@ const AvailableCollectionCard = ({availableCollection}) => {
 
   const isActiveCollection = (collection?.id == availableCollection.id);  
 
-  const removeCollection = id => {
+  const removeCollection = () => {
     dispatch({
       type: "removeAvailableCollection",
       data: {
@@ -58,7 +58,7 @@ const AvailableCollectionCard = ({availableCollection}) => {
 
         <a
           className = "card-footer-item has-background-danger-light has-text-danger-dark"
-          onClick = {() => removeCollection(collection.id)}
+          onClick = {removeCollection}
         >
           Leave collection
         </a>
