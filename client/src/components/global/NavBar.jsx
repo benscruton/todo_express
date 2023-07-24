@@ -12,7 +12,7 @@ const NavBar = () => {
     <nav className = "navbar is-black mb-4 has-shadow">
 
       <div className = "navbar-brand">
-        <div className = "navbar-item has-text-primary" href="https://bulma.io">
+        <div className = "navbar-item has-text-primary has-text-weight-bold">
           LISTY McLISTFACE
         </div>
 

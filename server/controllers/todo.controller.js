@@ -46,7 +46,7 @@ const todoController = {
   },
 
   // DELETE to /api/todos/:todoId
-  softDeleteById: (req, rsp) => {
+  softDeleteById: async (req, rsp) => {
     const {todoId} = req.params;
     Todo.destroy(
       {where: {id: todoId}}

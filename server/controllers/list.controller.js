@@ -12,7 +12,16 @@ const listController = {
         listId,
         {include: Todo}
       );
-      todoData.orderRank = list.todos.length;
+      if(todoData.dueDate === ""){
+        delete todoData.dueDate;
+      }
+      todoData.orderRank = list.todos.length ?
+        Math.max(
+          ...list.todos.map(t => t.orderRank)
+        ) + 1
+        :
+        0;
+
       const todo = await Todo.create(
         todoData,
         {fields: ["text", "isComplete", "dueDate", "notes", "orderRank"]}
@@ -32,16 +41,76 @@ const listController = {
     }
   },
 
-  // POST to /api/lists/:listId/todos/order
-  // reorderTodos: (req, rsp) => {
-    // Think about how to do this.  Could just move
-    // one to-do, and add a :todoId param into
-    // the route and a newOrderRank field in the
-    // post body?  Then, update the original,
-    // and increment everything in between.
-    // Or, it could be a one-for-one swap sort
-    // of a thing.
-  // }
+  // PUT to /api/lists/:listId/todos/order
+  reorderTodos: async (req, rsp) => {
+    try{
+      const {listId} = req.params;
+      const {strategy, todoId, todoId2} = req.body;
+      const list = await List.findByPk(
+        listId,
+        {include: Todo}
+      );
+      if(!todoId){
+        return rsp.json({
+          success: false,
+          message: "Include a todoId in the request body"
+        });
+      }
+
+      switch(strategy){
+        case "swap":
+          if(!todoId2){
+            return rsp.json({
+              success: false,
+              message: "For swap, request body must also include todoId2"
+            });
+          }
+          const {orderRank: rank1} = await Todo.findByPk(todoId);
+          const {orderRank: rank2} = await Todo.findByPk(todoId2);
+          await Todo.update(
+            {orderRank: rank2},
+            {where: {id: todoId}}
+          );
+          await Todo.update(
+            {orderRank: rank1},
+            {where: {id: todoId2}}
+          );
+          rsp.json({success: true});
+          break;
+
+        case "top": 
+          const topRank = Math.min(
+            ...list.todos.map(t => t.orderRank)
+          ) - 1;
+          await Todo.update(
+            {orderRank: topRank},
+            {where: {id: todoId}}
+          );
+          rsp.json({success: true});
+          break;
+
+        case "bottom":
+          const bottomRank = Math.max(
+            ...list.todos.map(t => t.orderRank)
+          ) + 1;
+          await Todo.update(
+            {orderRank: bottomRank},
+            {where: {id: todoId}}
+          );
+          rsp.json({success: true});
+          break;
+
+        default:
+          rsp.json({
+            success: false,
+            message: "Strategy not recognized."
+          });
+      }
+    }
+    catch(error){
+      rsp.status(500).rsp({success: false, error});
+    }
+  }
 };
 
 module.exports = listController;
