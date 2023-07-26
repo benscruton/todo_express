@@ -48,7 +48,12 @@ const listController = {
       const {strategy, todoId, todoId2} = req.body;
       const list = await List.findByPk(
         listId,
-        {include: Todo}
+        {
+          include: Todo,
+          order: [
+            [Todo, "orderRank", "ASC"]
+          ]
+        }
       );
       if(!todoId){
         return rsp.json({
@@ -58,22 +63,45 @@ const listController = {
       }
 
       switch(strategy){
-        case "swap":
-          if(!todoId2){
-            return rsp.json({
-              success: false,
-              message: "For swap, request body must also include todoId2"
-            });
+        // case "swap":
+        //   if(!todoId2){
+        //     return rsp.json({
+        //       success: false,
+        //       message: "For swap, request body must also include todoId2"
+        //     });
+        //   }
+        //   const {orderRank: rank1} = await Todo.findByPk(todoId);
+        //   const {orderRank: rank2} = await Todo.findByPk(todoId2);
+        //   await Todo.update(
+        //     {orderRank: rank2},
+        //     {where: {id: todoId}}
+        //   );
+        //   await Todo.update(
+        //     {orderRank: rank1},
+        //     {where: {id: todoId2}}
+        //   );
+        //   rsp.json({success: true});
+        //   break;
+
+        case "up":
+        case "down":
+          const todoIds = list.todos.map(todo => todo.id);
+          const todoIdx = todoIds.indexOf(todoId);
+          const switchIdx = (strategy === "up" ? todoIdx - 1 : todoIdx + 1);
+
+          const original = list.todos[todoIdx];
+          const swapWith = list.todos[switchIdx];
+          
+          if(!swapWith) {
+            return rsp.json({success: "false", message: "Impossible movement"});
           }
-          const {orderRank: rank1} = await Todo.findByPk(todoId);
-          const {orderRank: rank2} = await Todo.findByPk(todoId2);
           await Todo.update(
-            {orderRank: rank2},
-            {where: {id: todoId}}
+            {orderRank: swapWith.orderRank},
+            {where: {id: original.id}}
           );
           await Todo.update(
-            {orderRank: rank1},
-            {where: {id: todoId2}}
+            {orderRank: original.orderRank},
+            {where: {id: swapWith.id}}
           );
           rsp.json({success: true});
           break;
@@ -108,7 +136,7 @@ const listController = {
       }
     }
     catch(error){
-      rsp.status(500).rsp({success: false, error});
+      rsp.status(500).json({success: false, error});
     }
   }
 };
