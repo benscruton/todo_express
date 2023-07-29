@@ -4,7 +4,7 @@ const todoController = {
 
   // GET to /api/todos (dev only)
   all: (_, rsp) => {
-    Todo.findAll({paranoid: false})
+    Todo.findAll()
       .then(todos => {
         console.log(todos);
         rsp.json({todos});
@@ -16,8 +16,7 @@ const todoController = {
   findById: (req, rsp) => {
     const {todoId} = req.params;
     Todo.findByPk(
-      todoId,
-      {attributes: {exclude: ["deletedAt"]}}
+      todoId
     )
       .then(todo => rsp.json(todo))
       .catch(error => rsp.status(400).json({error}));
@@ -32,8 +31,7 @@ const todoController = {
         {where: {id: todoId}}
       );
       const todo = await Todo.findByPk(
-        todoId,
-        {attributes: {exclude: ["deletedAt"]}}
+        todoId
       )
       rsp.json({
         updated: !!count,

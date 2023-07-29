@@ -45,3 +45,8 @@ const sequelize = usePostgres ?
   new Sequelize(sqliteConfig);
 
 module.exports = sequelize;
+
+sequelize.authenticate()
+  .then(() => {
+    console.log("Database connected successfully.");
+  });

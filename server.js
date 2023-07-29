@@ -13,9 +13,7 @@ app.use(
   express.urlencoded({"extended": true})
 );    
 
-const {sequelize} = require("./server/config");
-sequelize.authenticate()
-  .then(() => console.log("Database connected successfully."));
+require("./server/config");
 
 const routes = require("./server/routes");
 // app.use(express.static('client/build'));

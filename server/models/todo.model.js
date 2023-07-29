@@ -37,8 +37,7 @@ Todo.init(
   // Config
   {
     sequelize,
-    modelName: 'todo',
-    paranoid: true
+    modelName: 'todo'
   }
 );
 

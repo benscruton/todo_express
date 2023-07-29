@@ -49,7 +49,7 @@ const TodoForm = ({
     }
 
     const axiosOptions = {headers: {
-      ["x-collection-token"]: collection.token
+      "x-collection-token": collection.token
     }};
     if(todo){   // edit existing todo
       axios.put(
@@ -95,7 +95,7 @@ const TodoForm = ({
     axios.delete(
       `${serverUrl}/api/todos/${todo.id}`,
       {headers: {
-        ["x-collection-token"]: collection.token
+        "x-collection-token": collection.token
       }}
     )
       .catch(e => console.error(e));

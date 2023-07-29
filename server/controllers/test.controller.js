@@ -1,5 +1,12 @@
 const testController = {
-  test: (req, rsp) => rsp.json({message: "Controller: Success!"}),
+  test: (req, rsp) => {
+    console.log(req);
+    rsp.json({
+      message: "Controller: Success!",
+      method: req.method,
+      body: req.body
+    });
+  },
 
   tryCookie: (req, rsp) => {
     console.log(req.cookies);

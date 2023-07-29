@@ -43,8 +43,7 @@ Collection.init(
   // Config
   {
     sequelize,
-    modelName: 'collection',
-    paranoid: true  // enable soft deletion
+    modelName: 'collection'
   }
 );
 

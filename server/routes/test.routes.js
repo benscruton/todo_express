@@ -3,7 +3,7 @@ const {testController} = require("../controllers");
 const {confirmPassphrase} = require("../config/middleware");
 
 router.route("/")
-  .get(testController.test);
+  .all(testController.test);
 
 router.route("/cookie")
   .get(testController.tryCookie);

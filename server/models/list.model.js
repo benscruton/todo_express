@@ -24,8 +24,7 @@ List.init(
   // Config
   {
     sequelize,
-    modelName: 'list',
-    paranoid: true  // enable soft deletion
+    modelName: 'list'
   }
 );
 

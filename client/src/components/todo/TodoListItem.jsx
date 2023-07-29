@@ -29,7 +29,7 @@ const TodoListItem = ({
       `${serverUrl}/api/todos/${todoId}`,
       {isComplete: newCompletionStatus},
       {headers: {
-        ["x-collection-token"]: collection.token
+        "x-collection-token": collection.token
       }}
     )
       .catch(e => console.error(e));
@@ -65,7 +65,7 @@ const TodoListItem = ({
         todoId: todo.id
       },
       {headers: {
-        ["x-collection-token"]: collection.token
+        "x-collection-token": collection.token
       }}
     )
       .catch(e => console.error(e));

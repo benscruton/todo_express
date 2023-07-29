@@ -51,13 +51,11 @@ const collectionController = {
     Collection.findByPk(
       collectionId,
       {
-        attributes: {exclude: ["passphrase", "deletedAt"]},
+        attributes: {exclude: ["passphrase"]},
         include: {
           model: List,
-          attributes: {exclude: ["deletedAt"]},
           include: {
             model: Todo,
-            attributes: {exclude: ["deletedAt"]}
           },
         },
         order: [
@@ -83,9 +81,7 @@ const collectionController = {
       }
     )
       .then(collections => rsp.json({collections}))
-      .catch(error => rsp.status(500).json({error}));
-
-      
+      .catch(error => rsp.status(500).json({error})); 
   },
 };
 
