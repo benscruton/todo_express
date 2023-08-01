@@ -19,7 +19,7 @@ const postgresParams = [
 ];
 
 let usePostgres = true;
-if(!postgresParams.every(v => v)){
+if(!postgresParams.every(v => v) && !process.env.POSTGRES_CONNECTION_STRING){
   usePostgres = false;
 }
 
