@@ -16,7 +16,7 @@ app.use(
 require("./server/config");
 
 const routes = require("./server/routes");
-// app.use(express.static('client/build'));
+app.use(express.static('client/build'));
 app.use(routes);
 
 app.listen(port, () => console.log(`Listening on ${port}...`));

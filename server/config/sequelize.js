@@ -20,14 +20,18 @@ const postgresParams = [
 ];
 
 let usePostgres = true;
-if(!postgresParams.every(v => v)){
+if(!postgresParams.every(v => v) && !process.env.POSTGRES_CONNECTION_STRING){
   usePostgres = false;
   if(postgresParams.some(v => v)){
     console.log("Some Postgres variable(s) missing; using Sqlite database as fall-back");
   }
 }
 
-const postgresString = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`;
+const postgresString = (
+  process.env.POSTGRES_CONNECTION_STRING
+  ||
+  `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
+);
 
 const sqliteConfig = {
   dialect: "sqlite",

@@ -2,16 +2,6 @@ const {List, Todo} = require("../models");
 
 const todoController = {
 
-  // GET to /api/todos (dev only)
-  all: (_, rsp) => {
-    Todo.findAll()
-      .then(todos => {
-        console.log(todos);
-        rsp.json({todos});
-      })
-      .catch(error => rsp.status(500).json({error}));
-  },
-  
   // GET to /api/todos/:todoId
   findById: (req, rsp) => {
     const {todoId} = req.params;

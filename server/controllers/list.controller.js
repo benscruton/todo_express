@@ -63,26 +63,6 @@ const listController = {
       }
 
       switch(strategy){
-        // case "swap":
-        //   if(!todoId2){
-        //     return rsp.json({
-        //       success: false,
-        //       message: "For swap, request body must also include todoId2"
-        //     });
-        //   }
-        //   const {orderRank: rank1} = await Todo.findByPk(todoId);
-        //   const {orderRank: rank2} = await Todo.findByPk(todoId2);
-        //   await Todo.update(
-        //     {orderRank: rank2},
-        //     {where: {id: todoId}}
-        //   );
-        //   await Todo.update(
-        //     {orderRank: rank1},
-        //     {where: {id: todoId2}}
-        //   );
-        //   rsp.json({success: true});
-        //   break;
-
         case "up":
         case "down":
           const todoIds = list.todos.map(todo => todo.id);
@@ -138,7 +118,7 @@ const listController = {
     catch(error){
       rsp.status(500).json({success: false, error});
     }
-  }
+  },
 };
 
 module.exports = listController;
