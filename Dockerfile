@@ -16,6 +16,4 @@ RUN cd client && yarn install --production && yarn build
 
 EXPOSE 8000
 
-RUN yarn sequelize-cli db:migrate --env production
-
 CMD ["node", "server.js"]
