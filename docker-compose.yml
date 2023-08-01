@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  todo_app:
+    container_name: todo_app
+    build: .
+    ports:
+      - 3039:8000
+    restart: unless-stopped
+    env_file:
+      - ./.env
