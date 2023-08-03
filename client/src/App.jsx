@@ -70,6 +70,9 @@ function App() {
           type: "markCollectionLoaded"
         }));
     }
+    else{
+      dispatch({type: "markCollectionLoaded"});
+    }
     
   }, []);
 

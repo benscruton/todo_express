@@ -13,7 +13,7 @@ const NavBar = () => {
 
       <div className = "navbar-brand">
         <div className = "navbar-item has-text-primary has-text-weight-bold">
-          LISTY McLISTFACE
+          HELLO :)
         </div>
 
         <a
@@ -50,16 +50,20 @@ const NavBar = () => {
           </NavLink>
         </div>
 
-        <div className = "navbar-end">
-          <span className = "navbar-item">
-            <button
-              className = "button is-info"
-              onClick={() => console.log(state)}
-            >
-              Log state
-            </button>
-          </span>
-        </div>
+        {process.env.NODE_ENV === "development" ?
+          <div className = "navbar-end">
+            <span className = "navbar-item">
+              <button
+                className = "button is-info"
+                onClick={() => console.log(state)}
+              >
+                Log state
+              </button>
+            </span>
+          </div>
+          :
+          <></>
+        }
       </div>
     </nav>
   );
