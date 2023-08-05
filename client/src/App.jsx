@@ -1,4 +1,6 @@
 import './App.css';
+import "bulma/css/bulma.min.css"
+import "bulma-switch"
 import {
   useEffect,
   useReducer
@@ -18,7 +20,7 @@ import {
   Landing
 } from "./views";
 
-const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://localhost:3038");
+const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://localhost:8000");
 
 function App() {
   const initialState = {

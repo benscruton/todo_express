@@ -1,7 +1,7 @@
 import {useState} from "react";
 import TodoListItem from "../todo/TodoListItem";
 
-const ListDisplay = ({list, listIdx}) => {
+const ListDisplay = ({list, listIdx, showComplete}) => {
   const [expandedItems, setExpandedItems] = useState([]);
 
   const expandItem = id => {
@@ -22,21 +22,33 @@ const ListDisplay = ({list, listIdx}) => {
       </h2>
 
       <ul>
-        {[
-          ...list.todos,
-          null
-        ].map((todo, todoIdx) =>
-          <TodoListItem
-            key = {todo?.id || "new"}
-            todo = {todo}
-            todoIdx = {todoIdx}
-            list = {list}
-            listIdx = {listIdx}
-            expandedItems = {expandedItems}
-            expandItem = {expandItem}
-            contractItem = {contractItem}
-          />
-        )}
+        {list.todos
+          .filter(todo => 
+            showComplete ? true : !todo.isComplete
+          )
+          .map((todo, todoIdx) =>
+            <TodoListItem
+              key = {todo?.id || "new"}
+              todo = {todo}
+              todoIdx = {todoIdx}
+              list = {list}
+              listIdx = {listIdx}
+              expandedItems = {expandedItems}
+              expandItem = {expandItem}
+              contractItem = {contractItem}
+            />
+          )
+        }
+
+        {/* Probably make this its own thing at some point */}
+        <TodoListItem
+          todo = {null}
+          list = {list}
+          listIdx = {listIdx}
+          expandedItems = {expandedItems}
+          expandItem = {expandItem}
+          contractItem = {contractItem}
+        />
       </ul>
     </div>
   );
