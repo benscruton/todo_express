@@ -1,6 +1,9 @@
 import {useState, useContext} from "react";
 import axios from "axios";
 import AppContext from "../../context/AppContext";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 const TodoForm = ({
   list,
@@ -23,7 +26,7 @@ const TodoForm = ({
 
   const [inputs, setInputs] = useState({
    text: todo?.text || "",
-   dueDate: todo?.dueDate || "",
+   dueDate: todo?.dueDate ? dayjs.utc(todo.dueDate).format("YYYY-MM-DD") : "",
    notes: todo?.notes || "" 
   });
   const [inputErrors, setInputErrors] = useState(blankFields);
