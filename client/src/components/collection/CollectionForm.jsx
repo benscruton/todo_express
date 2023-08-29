@@ -1,4 +1,5 @@
 import {useState, useContext} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import AppContext from "../../context/AppContext";
 import AvailableCollectionCard from "./AvailableCollectionCard";
@@ -10,6 +11,7 @@ const CollectionForm = ({collections}) => {
     dispatch,
     loadCollection
   } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const blankFields = {
     collection: "",
@@ -78,6 +80,7 @@ const CollectionForm = ({collections}) => {
                 }
               }
             });
+            navigate("/collections/view");
           })
           .catch(e => console.error(e));
 

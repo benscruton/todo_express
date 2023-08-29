@@ -7,7 +7,13 @@ const CollectionPage = () => {
   const {state: {collection}} = useContext(AppContext);
   
   const [showComplete, setShowComplete] = useState(true);
+  const [activeListIdx, setActiveListIdx] = useState(0);
   const toggleShowComplete = () => setShowComplete(!showComplete);
+
+  let x = [];
+  while(x.length < 100){
+    x.push("hello");
+  }
 
   return (
     <div className = "container">
@@ -33,16 +39,44 @@ const CollectionPage = () => {
       </div>
 
       {collection?.lists?.length ?
-        collection.lists.map((list, idx) =>
-          <div key = {list.id}>
-            <ListDisplay
-              list = {list}
-              listIdx = {idx}
-              showComplete = {showComplete}
-            />
-          </div>
-        )
+        <div className = "tabs is-centered is-boxed">
+          <ul>
+            {collection.lists.map((list, idx) =>
+              <li
+                key = {list.id}
+                className = {activeListIdx === idx ? "is-active" : ""}
+              >
+                <a onClick = {() => setActiveListIdx(idx)}>
+                  {list.name}
+                </a>
+              </li>
+            )}
+            <li className = {activeListIdx === -1 ? "is-active" : ""}>
+              <a onClick = {() => setActiveListIdx(-1)}>
+                <span className = "icon">
+                  <i
+                    className = "bi-clipboard2-plus "
+                    aria-hidden
+                  />
+                </span>
+                <span>
+                  Add List
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
         : <></>
+      }
+
+      {collection?.lists && collection.lists[activeListIdx] ?
+        <ListDisplay
+          list = {collection.lists[activeListIdx]}
+          listIdx = {activeListIdx}
+          showComplete = {showComplete}
+        />
+        :
+        <></>
       }
     </div>
   )
