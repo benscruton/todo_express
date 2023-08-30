@@ -119,6 +119,15 @@ const listController = {
       rsp.status(500).json({success: false, error});
     }
   },
+
+  deleteList: (req, rsp) => {
+    const {listId} = req.params;
+    List.destroy(
+      {where: {id: listId}}
+    )
+      .then(count => rsp.json({deleted: !!count}))
+      .catch(error => rsp.status(500).json({error}));
+  },
 };
 
 module.exports = listController;

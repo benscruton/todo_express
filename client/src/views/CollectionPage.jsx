@@ -1,7 +1,10 @@
 
 import {useContext, useState} from "react";
 import AppContext from "../context/AppContext";
-import {ListDisplay} from "../components";
+import {
+  ListDisplay,
+  NewListForm
+} from "../components";
 
 const CollectionPage = () => {
   const {state: {collection}} = useContext(AppContext);
@@ -69,14 +72,17 @@ const CollectionPage = () => {
         : <></>
       }
 
-      {collection?.lists && collection.lists[activeListIdx] ?
-        <ListDisplay
-          list = {collection.lists[activeListIdx]}
-          listIdx = {activeListIdx}
-          showComplete = {showComplete}
-        />
+      {activeListIdx === -1 ?
+        <NewListForm />
         :
-        <></>
+        collection?.lists && collection.lists[activeListIdx] ?
+          <ListDisplay
+            list = {collection.lists[activeListIdx]}
+            listIdx = {activeListIdx}
+            showComplete = {showComplete}
+          />
+          :
+          <></>
       }
     </div>
   )

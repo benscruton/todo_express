@@ -2,7 +2,6 @@ import {useState, useContext} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import AppContext from "../../context/AppContext";
-import AvailableCollectionCard from "./AvailableCollectionCard";
 
 const CollectionForm = ({collections}) => {
   const {

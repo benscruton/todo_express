@@ -140,7 +140,7 @@ const TodoForm = ({
               onChange = {handleChange}
             />
           </div>
-          <p className = "help is-danger-dark">
+          <p className = "help has-text-danger-dark">
             {inputErrors.text}
           </p>
         </div>

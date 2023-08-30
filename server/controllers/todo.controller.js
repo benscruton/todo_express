@@ -16,11 +16,6 @@ const todoController = {
   updateById: async (req, rsp) => {
     try{
       const {todoId} = req.params;
-      const todoData = req.body;
-      // if(todoData.dueDate){
-      //   todoData.dueDate = new Date(todoData.dueDate);
-      // }
-      console.log(todoData);
       const [count] = await Todo.update(
         req.body,
         {
@@ -31,7 +26,6 @@ const todoController = {
       const todo = await Todo.findByPk(
         todoId
       );
-      console.log(todo);
       rsp.json({
         updated: !!count,
         todo
@@ -43,7 +37,7 @@ const todoController = {
   },
 
   // DELETE to /api/todos/:todoId
-  softDeleteById: async (req, rsp) => {
+  deleteById: async (req, rsp) => {
     const {todoId} = req.params;
     Todo.destroy(
       {where: {id: todoId}}

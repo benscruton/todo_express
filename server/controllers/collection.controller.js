@@ -59,6 +59,7 @@ const collectionController = {
           },
         },
         order: [
+          [List, "orderRank", "ASC"],
           [List, Todo, "orderRank", "ASC"]
         ]
       }
@@ -71,6 +72,46 @@ const collectionController = {
         collection: coll
       });
     }).catch(error => rsp.status(500).json({error}));
+  },
+
+  // POST to /api/collections/:collectionId/lists
+  addList: async (req, rsp) => {
+    try{
+      const {collectionId} = req.params;
+      const listData = req.body;
+
+      const collection = await Collection.findByPk(
+        collectionId,
+        {include: List}
+      );
+      listData.orderRank = collection.lists.length ?
+        Math.max(
+          ...collection.lists.map(l => l.orderRank)
+        ) + 1
+        :
+        0;
+
+      const listSimple = await List.create(
+        listData,
+        {fields: ["name", "orderRank"]}
+      );
+      const list = await List.findByPk(
+        listSimple.id,
+        {include: {model: Todo}}
+      );
+
+      await list.setCollection(collection);
+      rsp.json({
+        success: true,
+        list
+      });
+    }
+    catch(error){
+      rsp.status(500).json({
+        success: false,
+        error
+      });
+    }
   },
 
   getAllCollectionNames: (req, rsp) => {

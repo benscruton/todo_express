@@ -12,6 +12,9 @@ router.route("/")
 router.route("/:collectionId")
   .get(confirmPassphrase, collectionController.getCollection);
 
+router.route("/:collectionId/lists")
+  .post(confirmPassphrase, collectionController.addList);
+
 router.route("/:collectionId/access")
   .post(confirmPassphrase, collectionController.encryptPassphrase);
 
