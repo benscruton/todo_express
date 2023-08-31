@@ -2,7 +2,7 @@ import {useState, useContext} from "react";
 import axios from "axios";
 import AppContext from "../../context/AppContext";
 
-const NewListForm = () => {
+const NewListForm = ({setActiveListIdx}) => {
   const {
     serverUrl,
     state: {collection},
@@ -50,6 +50,8 @@ const NewListForm = () => {
         setInputs(blankInputs);
       })
       .catch(e => console.log(e));
+    
+    setActiveListIdx(collection?.lists?.length);
   };
 
   return (

@@ -14,13 +14,11 @@ const CollectionPage = () => {
   const [activeListIdx, setActiveListIdx] = useState(0);
   const toggleShowComplete = () => setShowComplete(!showComplete);
 
-  let x = [];
-  while(x.length < 100){
-    x.push("hello");
-  }
-
   return (
     <div className = "container">
+    <button onClick = {() => console.log(activeListIdx)}>
+      Log idx
+    </button>
       <h1
         className = "has-text-centered title"
       >
@@ -74,7 +72,9 @@ const CollectionPage = () => {
       }
 
       {activeListIdx === -1 ?
-        <NewListForm />
+        <NewListForm
+          setActiveListIdx = {setActiveListIdx}
+        />
         :
         <></>
       }
@@ -89,6 +89,7 @@ const CollectionPage = () => {
 
           <DeleteListButton
             listId = {collection.lists[activeListIdx].id}
+            activeListIdx = {activeListIdx}
             setActiveListIdx = {setActiveListIdx}
           />
         </>
