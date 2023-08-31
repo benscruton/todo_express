@@ -37,7 +37,13 @@ const AvailableCollectionCard = ({availableCollection}) => {
         <h4 className = "subtitle">
           Lists:  
         </h4>
-        {availableCollection.lists}
+        <ul>
+          {availableCollection.lists.map((list, idx) =>
+            <li key = {idx}>
+              - {list?.name || list}
+            </li>
+          )}
+        </ul>
       </div>
 
       <footer className = "card-footer">

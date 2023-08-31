@@ -1,6 +1,7 @@
 import addAvailableCollection from "./addAvailableCollection";
 import addList from "./addList";
 import addTodo from "./addTodo";
+import deleteList from "./deleteList";
 import deleteTodo from "./deleteTodo";
 import markCollectionLoaded from "./markCollectionLoaded";
 import removeAvailableCollection from "./removeAvailableCollection";
@@ -12,6 +13,7 @@ const methods = {
   addAvailableCollection,
   addList,
   addTodo,
+  deleteList,
   deleteTodo,
   markCollectionLoaded,
   removeAvailableCollection,

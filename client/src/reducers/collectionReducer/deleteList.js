@@ -1,13 +1,13 @@
-const addList = (state, data) => {
+const deleteList = (state, data) => {
   const {
     collection,
     availableCollections
   } = state;
-  const {list} = data;
+  const {listId} = data;
 
   // Find index of this collection
   const idx = availableCollections.map(
-    ac => ac.id
+      ac => ac.id
   ).indexOf(collection.id);
 
   // Create updated object
@@ -15,15 +15,14 @@ const addList = (state, data) => {
     ...availableCollections.slice(0, idx),
     {
       ...availableCollections[idx],
-      lists: [
-        ...availableCollections[idx].lists,
-        {name: list.name, id: list.id}
-      ]
+      lists: availableCollections[idx].lists.filter(
+        list => list.id !== listId
+      )
     },
     ...availableCollections.slice(idx + 1)
   ];
 
-  // Add list to availableCollections data in localStorage
+  // Update the version saved in local storage
   localStorage.setItem(
     "todo-collections",
     JSON.stringify(updatedAvailableCollections)
@@ -34,13 +33,12 @@ const addList = (state, data) => {
     ...state,
     collection: {
       ...collection,
-      lists: [
-        ...collection.lists,
-        list
-      ]
+      lists: collection.lists.filter(
+        list => list.id !== listId
+      )
     },
     availableCollections: updatedAvailableCollections
   };
 };
 
-export default addList;
+export default deleteList;

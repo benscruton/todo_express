@@ -10,7 +10,7 @@ const addAvailableCollection = (state, data) => {
     id: collectionData.id,
     name: collectionData.name,
     lists: collectionData.lists.map(
-      l => l.name
+      l => ({name: l.name, id: l.id})
     ),
     token: collectionData.token
   };
@@ -34,7 +34,10 @@ const addAvailableCollection = (state, data) => {
   // Set active collection in localStorage either way
   localStorage.setItem(
     "todo-active-collection",
-    JSON.stringify(collection)
+    JSON.stringify({
+      id: collection.id,
+      token: collection.token
+    })
   );
 
   return {...state,

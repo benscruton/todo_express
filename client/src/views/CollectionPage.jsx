@@ -3,7 +3,8 @@ import {useContext, useState} from "react";
 import AppContext from "../context/AppContext";
 import {
   ListDisplay,
-  NewListForm
+  NewListForm,
+  DeleteListButton
 } from "../components";
 
 const CollectionPage = () => {
@@ -75,14 +76,24 @@ const CollectionPage = () => {
       {activeListIdx === -1 ?
         <NewListForm />
         :
-        collection?.lists && collection.lists[activeListIdx] ?
+        <></>
+      }
+
+      {collection?.lists && collection.lists[activeListIdx] ?
+        <>
           <ListDisplay
             list = {collection.lists[activeListIdx]}
             listIdx = {activeListIdx}
             showComplete = {showComplete}
           />
-          :
-          <></>
+
+          <DeleteListButton
+            listId = {collection.lists[activeListIdx].id}
+            setActiveListIdx = {setActiveListIdx}
+          />
+        </>
+        :
+        <></>
       }
     </div>
   )
