@@ -16,9 +16,6 @@ const CollectionPage = () => {
 
   return (
     <div className = "container">
-    <button onClick = {() => console.log(activeListIdx)}>
-      Log idx
-    </button>
       <h1
         className = "has-text-centered title"
       >

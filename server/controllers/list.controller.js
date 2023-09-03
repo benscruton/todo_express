@@ -1,3 +1,4 @@
+const dayjs = require("dayjs");
 const {List, Todo} = require("../models");
 
 const listController = {
@@ -12,7 +13,7 @@ const listController = {
         listId,
         {include: Todo}
       );
-      if(todoData.dueDate === ""){
+      if(!dayjs(todoData.dueDate).isValid()){
         delete todoData.dueDate;
       }
       todoData.orderRank = list.todos.length ?

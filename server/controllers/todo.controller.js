@@ -1,4 +1,5 @@
-const {List, Todo} = require("../models");
+const dayjs = require("dayjs");
+const {Todo} = require("../models");
 
 const todoController = {
 
@@ -16,6 +17,11 @@ const todoController = {
   updateById: async (req, rsp) => {
     try{
       const {todoId} = req.params;
+      const todoData = req.body;
+      if(!dayjs(todoData.dueDate).isValid()){
+        delete todoData.dueDate;
+      }
+
       const [count] = await Todo.update(
         req.body,
         {
