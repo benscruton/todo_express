@@ -23,20 +23,31 @@ const ListDisplay = ({list, listIdx, showComplete}) => {
 
       <ul>
         {list.todos
-          .filter(todo => 
-            showComplete ? true : !todo.isComplete
-          )
           .map((todo, todoIdx) =>
-            <TodoListItem
-              key = {todo?.id || "new"}
-              todo = {todo}
-              todoIdx = {todoIdx}
-              list = {list}
-              listIdx = {listIdx}
-              expandedItems = {expandedItems}
-              expandItem = {expandItem}
-              contractItem = {contractItem}
-            />
+            (todo.isComplete && !showComplete) ?
+              <div key = {todo.id}></div>
+              :
+              <TodoListItem
+                key = {todo?.id || "new"}
+                todo = {todo}
+                todoIdx = {todoIdx}
+                list = {list}
+                listIdx = {listIdx}
+                expandedItems = {expandedItems}
+                expandItem = {expandItem}
+                contractItem = {contractItem}
+                showComplete = {showComplete}
+                shadeBackground = {
+                  showComplete ?
+                    !!(todoIdx % 2)
+                    :
+                    !!(list.todos
+                      .filter(t => !t.isComplete)
+                      .map(t => t.id)
+                      .indexOf(todo.id)
+                      % 2)
+                }
+              />
           )
         }
 

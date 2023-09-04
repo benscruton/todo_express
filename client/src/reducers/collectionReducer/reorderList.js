@@ -3,7 +3,8 @@ const reorderList = (state, data) => {
   const {
     strategy,
     listIdx,
-    todoIdx
+    todoIdx,
+    showComplete
   } = data;
 
   const todoId = collection.lists[listIdx].todos[todoIdx].id;
@@ -30,9 +31,18 @@ const reorderList = (state, data) => {
       };
 
     case "up":
-      if(todoIdx === 0){
-        return state;
+      let prevItemIdx = todoIdx - 1;
+      if(!showComplete){
+        while(prevItemIdx >= 0){
+          const item = collection.lists[listIdx].todos[prevItemIdx];
+          if(item && !item.isComplete){
+            break;
+          }
+          prevItemIdx--;
+        }
       }
+      if(prevItemIdx < 0) return state;
+      
       return {...state,
         collection: {
           ...collection,
@@ -41,9 +51,10 @@ const reorderList = (state, data) => {
             {
               ...collection.lists[listIdx],
               todos: [
-                ...collection.lists[listIdx].todos.slice(0, todoIdx - 1),
+                ...collection.lists[listIdx].todos.slice(0, prevItemIdx),
                 collection.lists[listIdx].todos[todoIdx],
-                collection.lists[listIdx].todos[todoIdx - 1],
+                ...collection.lists[listIdx].todos.slice(prevItemIdx + 1, todoIdx),
+                collection.lists[listIdx].todos[prevItemIdx],
                 ...collection.lists[listIdx].todos.slice(todoIdx + 1)
               ]
             },
@@ -53,9 +64,18 @@ const reorderList = (state, data) => {
       };
     
     case "down":
-      if(todoIdx === collection.lists[listIdx].todos.length - 1){
-        return state;
+      let nextItemIdx = todoIdx + 1;
+      if(!showComplete){
+        while(nextItemIdx < collection.lists[listIdx].length){
+          const item = collection.lists[listIdx].todos[nextItemIdx];
+          if(item && !item.isComplete){
+            break;
+          }
+          nextItemIdx++;
+        }
       }
+      if(nextItemIdx >= collection.lists[listIdx].length) return state;
+
       return {...state,
         collection: {
           ...collection,
@@ -65,9 +85,10 @@ const reorderList = (state, data) => {
               ...collection.lists[listIdx],
               todos: [
                 ...collection.lists[listIdx].todos.slice(0, todoIdx),
-                collection.lists[listIdx].todos[todoIdx + 1],
+                collection.lists[listIdx].todos[nextItemIdx],
+                ...collection.lists[listIdx].todos.slice(todoIdx + 1, nextItemIdx),
                 collection.lists[listIdx].todos[todoIdx],
-                ...collection.lists[listIdx].todos.slice(todoIdx + 2)
+                ...collection.lists[listIdx].todos.slice(nextItemIdx + 1)
               ]
             },
             ...collection.lists.slice(listIdx + 1)

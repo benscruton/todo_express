@@ -46,7 +46,7 @@ const listController = {
   reorderTodos: async (req, rsp) => {
     try{
       const {listId} = req.params;
-      const {strategy, todoId, todoId2} = req.body;
+      const {strategy, todoId, showComplete} = req.body;
       const list = await List.findByPk(
         listId,
         {
@@ -63,15 +63,23 @@ const listController = {
         });
       }
 
+      const showCompleteFilter = t => (
+        showComplete ? true : !t.isComplete
+      );
+
       switch(strategy){
         case "up":
         case "down":
-          const todoIds = list.todos.map(todo => todo.id);
+          const shownTodos = list.todos.filter(
+            t => showComplete ? true : !t.isComplete
+          );
+          const todoIds = shownTodos.map(todo => todo.id);
+
           const todoIdx = todoIds.indexOf(todoId);
           const switchIdx = (strategy === "up" ? todoIdx - 1 : todoIdx + 1);
 
-          const original = list.todos[todoIdx];
-          const swapWith = list.todos[switchIdx];
+          const original = shownTodos[todoIdx];
+          const swapWith = shownTodos[switchIdx];
           
           if(!swapWith) {
             return rsp.json({success: "false", message: "Impossible movement"});

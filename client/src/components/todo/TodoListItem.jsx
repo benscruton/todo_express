@@ -10,7 +10,9 @@ const TodoListItem = ({
   listIdx,
   expandedItems,
   expandItem,
-  contractItem
+  contractItem,
+  showComplete,
+  shadeBackground
 }) => {
   const {
     serverUrl,
@@ -55,14 +57,16 @@ const TodoListItem = ({
       data: {
         strategy,
         listIdx,
-        todoIdx
+        todoIdx,
+        showComplete
       }
     });
     axios.put(
       `${serverUrl}/api/lists/${list.id}/todos/order`,
       {
         strategy,
-        todoId: todo.id
+        todoId: todo.id,
+        showComplete
       },
       {headers: {
         "x-collection-token": collection.token
@@ -74,7 +78,7 @@ const TodoListItem = ({
   return (
     <li
       key = {id}
-      className = {`p-2 ${todoIdx % 2 ? "has-background-light" : ""}`}
+      className = {`p-2 ${shadeBackground ? "has-background-light" : ""}`}
     >
       <span className = {` is-flex is-flex-wrap-wrap ${id === "new" ? "is-justify-content-center" : "is-justify-content-space-between"}`}
       >
