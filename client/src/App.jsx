@@ -19,15 +19,22 @@ import {
   CollectionPage,
   Landing
 } from "./views";
+import {
+  parseAvailableCollections,
+  updateOldACFormat
+} from './utils';
 
 const serverUrl = (process.env.NODE_ENV === "production" ? "" : "http://localhost:8000");
 
 function App() {
+  const {
+    availableCollections,
+    oldFormatCollections
+  } = parseAvailableCollections();
+  
   const initialState = {
     collection: null,
-    availableCollections: JSON.parse(
-      localStorage.getItem("todo-collections") || "[]"
-    ),
+    availableCollections,
     isCollectionLoaded: false
   };
 
@@ -77,6 +84,16 @@ function App() {
     }
     
   }, []);
+
+  // Update any localStorage data using
+  // the old format for lists
+  useEffect(() => {
+    if(state.isCollectionLoaded){
+      oldFormatCollections.forEach(async collection => {
+        await updateOldACFormat({collection, dispatch, serverUrl});
+      });
+    }
+  }, [state.isCollectionLoaded]);
 
   return (
     <div className="App">

@@ -7,6 +7,7 @@ import markCollectionLoaded from "./markCollectionLoaded";
 import removeAvailableCollection from "./removeAvailableCollection";
 import reorderList from "./reorderList";
 import setCollection from "./setCollection";
+import updateAvailableCollection from "./updateAvailableCollection";
 import updateTodo from "./updateTodo";
 
 const methods = {
@@ -19,6 +20,7 @@ const methods = {
   removeAvailableCollection,
   reorderList,
   setCollection,
+  updateAvailableCollection,
   updateTodo
 }
 
