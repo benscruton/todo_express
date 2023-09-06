@@ -18,7 +18,10 @@ const todoController = {
     try{
       const {todoId} = req.params;
       const todoData = req.body;
-      if(!dayjs(todoData.dueDate).isValid()){
+      if(
+        todoData.dueDate === ""
+        || !dayjs(todoData.dueDate).isValid()
+      ){
         delete todoData.dueDate;
       }
 
@@ -26,7 +29,7 @@ const todoController = {
         req.body,
         {
           where: {id: todoId},
-          fields: ["text", "dueDate", "notes"]
+          fields: ["text", "dueDate", "notes", "isComplete"]
         }
       );
       const todo = await Todo.findByPk(
